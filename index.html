@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+
+<!-- PWA Support -->
+<meta name="theme-color" content="#6B1000"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="টিপি পূজা"/>
+<link rel="manifest" id="pwa-manifest"/>
+<link rel="apple-touch-icon" id="pwa-icon"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Tipi Sarbajanin Puja Committee</title>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<style>
+:root {
+  --saffron: #CC4400;
+  --deep-red: #6B1000;
+  --gold: #FFD700;
+  --gold-light: #FFE066;
+  --green: #006600;
+  --red: #CC0000;
+  --blue: #0055BB;
+  --bg: #FFF5E6;
+  --card: #FFFFFF;
+  --fs: 16px;
+  /* Theme variables */
+  --t-header1: #6B1000;
+  --t-header2: #AA2800;
+  --t-header3: #DD4400;
+  --t-grad1: #FF6600;
+  --t-grad2: #E05000;
+  --t-btn1: #8B2000;
+  --t-btn2: #CC4400;
+  --t-accent: #FFD700;
+  --t-content-bg: rgba(255,240,220,0.97);
+  --t-card-bg: #ffffff;
+  --t-card-shadow: rgba(139,0,0,0.13);
+  --t-text: #1a0a00;
+  --t-subtext: #8B3A00;
+  --t-border: #FFE0B2;
+  --t-inp-border: #FFB347;
+  --t-pill-bg: #fff8f0;
+  --t-drawer-bg: #fff8f0;
+  --t-tab-active: #fff;
+  --t-tab-text: var(--deep-red);
+}
+
+/* ── THEME: SKY BLUE ── */
+body.theme-sky {
+  --t-header1: #003D7A;
+  --t-header2: #0055AA;
+  --t-header3: #0077DD;
+  --t-grad1: #0088FF;
+  --t-grad2: #0055CC;
+  --t-btn1: #003D7A;
+  --t-btn2: #0066CC;
+  --t-accent: #FFD700;
+  --t-content-bg: rgba(220,240,255,0.97);
+  --t-card-shadow: rgba(0,80,180,0.13);
+  --t-text: #001a33;
+  --t-subtext: #003366;
+  --t-border: #B3D4FF;
+  --t-inp-border: #66AAFF;
+  --t-pill-bg: #E8F4FF;
+  --t-drawer-bg: #E8F4FF;
+  --deep-red: #003D7A;
+  --saffron: #0066CC;
+  --bg: #E0F0FF;
+}
+/* ── THEME: YELLOW ── */
+body.theme-yellow {
+  --t-header1: #7A5500;
+  --t-header2: #AA7700;
+  --t-header3: #DDAA00;
+  --t-grad1: #FFCC00;
+  --t-grad2: #EEB800;
+  --t-btn1: #7A5500;
+  --t-btn2: #CC9900;
+  --t-accent: #3D1A00;
+  --t-content-bg: rgba(255,250,210,0.97);
+  --t-card-shadow: rgba(150,100,0,0.15);
+  --t-text: #2a1a00;
+  --t-subtext: #5a3a00;
+  --t-border: #FFE57A;
+  --t-inp-border: #FFCC44;
+  --t-pill-bg: #FFFDE0;
+  --t-drawer-bg: #FFFDE0;
+  --deep-red: #7A5500;
+  --saffron: #CC9900;
+  --bg: #FFFACC;
+}
+/* ── THEME: VIOLET ── */
+body.theme-violet {
+  --t-header1: #2D0057;
+  --t-header2: #550099;
+  --t-header3: #7700CC;
+  --t-grad1: #8800FF;
+  --t-grad2: #6600CC;
+  --t-btn1: #2D0057;
+  --t-btn2: #6600CC;
+  --t-accent: #FFD700;
+  --t-content-bg: rgba(240,220,255,0.97);
+  --t-card-shadow: rgba(80,0,150,0.13);
+  --t-text: #1a0033;
+  --t-subtext: #4a0066;
+  --t-border: #DDB3FF;
+  --t-inp-border: #BB77FF;
+  --t-pill-bg: #F5E8FF;
+  --t-drawer-bg: #F5E8FF;
+  --deep-red: #2D0057;
+  --saffron: #6600CC;
+  --bg: #F0E0FF;
+}
+/* ── THEME: DARK MODE ── */
+body.theme-dark {
+  --t-header1: #111111;
+  --t-header2: #1E1E1E;
+  --t-header3: #2A2A2A;
+  --t-grad1: #1E1E1E;
+  --t-grad2: #111111;
+  --t-btn1: #CC4400;
+  --t-btn2: #FF6600;
+  --t-accent: #FFD700;
+  --t-content-bg: rgba(28,28,28,0.97);
+  --t-card-bg: #242424;
+  --t-card-shadow: rgba(0,0,0,0.4);
+  --t-text: #F0F0F0;
+  --t-subtext: #AAAAAA;
+  --t-border: #333333;
+  --t-inp-border: #555555;
+  --t-pill-bg: #1E1E1E;
+  --t-drawer-bg: #1E1E1E;
+  --t-tab-active: #2A2A2A;
+  --t-tab-text: #FFD700;
+  --deep-red: #CC4400;
+  --saffron: #FF6600;
+  --bg: #111111;
+  --card: #242424;
+}
+body.theme-dark .card { background: var(--t-card-bg); color: var(--t-text); }
+body.theme-dark .inp { background: #333; color: #eee; border-color: var(--t-inp-border); }
+body.theme-dark .lbl { color: #AAAAAA; }
+body.theme-dark td { color: var(--t-text); }
+body.theme-dark .member-name { color: #F0F0F0; }
+body.theme-dark .card-title { color: #FFD700; }
+body.theme-dark .drawer-section { border-color: #333; }
+body.theme-dark .drawer-section-header { background: #242424; color: #eee; }
+body.theme-dark .drawer-section-body { background: #1a1a1a; }
+body.theme-dark .pill:not(.active) { background: #242424; color: #FFD700; border-color: #555; }
+body.theme-dark .status-btn { background: #242424; }
+body.theme-dark select option { background: #242424; color: #eee; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); font-size: var(--fs); min-height: 100vh; }
+input, select, button, textarea { font-family: inherit; font-size: inherit; }
+
+/* ── SETUP SCREEN ── */
+#setup-screen {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a0500, #6B1000, #CC4400);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.setup-card {
+  background: rgba(255,255,255,0.97);
+  border-radius: 24px; padding: 36px 28px;
+  max-width: 480px; width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.setup-card h2 { color: var(--deep-red); font-size: 1.5em; margin: 12px 0 6px; text-align: center; }
+.setup-card p { color: #666; font-size: 0.88em; text-align: center; margin-bottom: 20px; line-height: 1.5; }
+.setup-input { width: 100%; padding: 12px 14px; border: 2px solid #FFB347; border-radius: 11px; font-size: 1em; outline: none; margin-bottom: 10px; }
+.setup-btn { width: 100%; padding: 14px; border: none; border-radius: 13px; cursor: pointer; font-weight: 800; font-size: 1em; margin-bottom: 10px; transition: opacity .15s; }
+.setup-btn:active { opacity: 0.8; }
+.btn-saffron { background: linear-gradient(135deg,#8B2000,#CC4400); color: #FFD700; }
+.btn-blue { background: linear-gradient(135deg,#004488,#0066CC); color: #FFD700; }
+.btn-green { background: linear-gradient(135deg,#004400,#006600); color: #FFD700; }
+.setup-note { font-size: 0.78em; color: #999; text-align: center; margin-top: 8px; line-height: 1.5; }
+.setup-divider { text-align: center; color: #ccc; margin: 14px 0; font-size: 0.85em; }
+
+/* ── LOADING ── */
+#loading-screen {
+  min-height: 100vh;
+  background: linear-gradient(135deg,#1a0500,#6B1000,#CC4400);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+}
+.spinner { width: 50px; height: 50px; border: 4px solid rgba(255,215,0,0.3); border-top-color: #FFD700; border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { color: #FFD700; font-size: 1.1em; font-weight: 700; }
+
+/* ── PENDING SCREEN ── */
+#pending-screen {
+  min-height: 100vh;
+  background: linear-gradient(135deg,#1a0500,#6B1000,#CC4400);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.pending-card {
+  background: rgba(255,255,255,0.97); border-radius: 24px; padding: 36px 28px;
+  max-width: 420px; width: 100%; text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.pending-icon { font-size: 3em; margin-bottom: 12px; }
+.pending-card h2 { color: var(--deep-red); margin-bottom: 10px; }
+.pending-card p { color: #666; font-size: 0.9em; line-height: 1.6; margin-bottom: 16px; }
+
+/* ── ADMIN PANEL ── */
+#admin-panel {
+  min-height: 100vh;
+  background: linear-gradient(160deg,var(--t-grad1),var(--t-grad2));
+}
+.admin-header {
+  background: linear-gradient(135deg,var(--t-header1),var(--t-header2),var(--t-header3));
+  padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+}
+.om-logo {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: linear-gradient(135deg,#6B0000,#CC3300);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.45); flex-shrink: 0;
+  font-size: 1.3em; color: #FFD700; font-family: Georgia, serif;
+}
+.header-title { flex: 1; min-width: 0; }
+.header-title .app-name { color: #FFD700; font-size: 1.1em; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.header-title .sub { color: rgba(255,215,0,0.65); font-size: 0.75em; }
+.header-btn { background: rgba(255,215,0,0.15); border: 1.5px solid rgba(255,215,0,0.5); color: #FFD700; border-radius: 10px; cursor: pointer; padding: 7px 14px; font-size: 0.85em; font-weight: 700; }
+
+.admin-tabs { display: flex; gap: 3px; padding: 10px 14px 0; overflow-x: auto; }
+.admin-tab { padding: 10px 16px; border-radius: 12px 12px 0 0; border: none; cursor: pointer; font-weight: 800; font-size: 0.85em; white-space: nowrap; flex-shrink: 0; }
+.admin-tab.active { background: var(--t-tab-active); color: var(--t-tab-text); }
+.admin-tab:not(.active) { background: rgba(0,0,0,0.18); color: rgba(255,255,255,0.88); }
+
+.admin-content { background: var(--t-content-bg); min-height: calc(100vh - 130px); padding: 14px 16px; }
+
+/* ── CARDS ── */
+.card { background: var(--t-card-bg); border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 3px 12px var(--t-card-shadow); transition: box-shadow 0.2s; }
+.dark-card { border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+.card-title { color: var(--deep-red); font-weight: 900; font-size: 1.15em; margin-bottom: 14px; }
+
+/* ── FORM ELEMENTS ── */
+.inp { width: 100%; padding: 11px 14px; border-radius: 11px; border: 2px solid var(--t-inp-border); font-size: 1em; outline: none; background: white; }
+.inp:focus { border-color: var(--saffron); }
+.lbl { font-size: 0.8em; color: #8B3A00; font-weight: 700; margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.4px; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.col { flex: 1; min-width: 90px; }
+.mb10 { margin-bottom: 10px; }
+.mb12 { margin-bottom: 12px; }
+.mb14 { margin-bottom: 14px; }
+
+/* ── BUTTONS ── */
+.btn { padding: 12px 18px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; font-size: 1em; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: opacity .15s; }
+.btn:active { opacity: 0.8; }
+.btn-primary { background: linear-gradient(135deg,var(--t-btn1),var(--t-btn2)); color: var(--t-accent); }
+.btn-secondary { background: rgba(139,0,0,0.07); color: var(--deep-red); border: 1.5px solid var(--saffron) !important; }
+.btn-blue { background: linear-gradient(135deg,#004488,#0066CC); color: #FFD700; }
+.btn-green-o { background: rgba(0,128,0,0.09); color: var(--green); border: 1.5px solid var(--green) !important; }
+.btn-danger-o { background: rgba(200,0,0,0.07); color: var(--red); border: 1.5px solid var(--red) !important; padding: 7px 10px; font-size: 0.82em; }
+.btn-edit { background: rgba(0,100,200,0.08); color: var(--blue); border: 1.5px solid var(--blue) !important; padding: 7px 10px; font-size: 0.82em; }
+.btn-full { width: 100%; }
+.btn-sm { padding: 8px 14px; font-size: 0.88em; }
+.btn-google { background: #fff; color: #333; border: 2px solid #ddd !important; display: flex; align-items: center; gap: 10px; justify-content: center; width: 100%; padding: 14px; border-radius: 13px; font-size: 1em; font-weight: 700; cursor: pointer; }
+.btn-google:hover { background: #f5f5f5; }
+
+/* ── TABLE ── */
+table { width: 100%; border-collapse: collapse; }
+th { background: linear-gradient(135deg,#8B2000,#CC4400); color: #FFD700; padding: 10px; font-size: 0.9em; font-weight: 700; text-align: left; }
+td { padding: 10px; border-bottom: 1px solid #FFE0B2; vertical-align: middle; }
+tr:nth-child(even) td { background: rgba(255,179,71,0.07); }
+
+/* ── MEMBER CARD ── */
+.member-card { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 8px; margin-bottom: 6px; border-radius: 12px; border: 2px solid; }
+.member-badge { width: 28px; height: 28px; border-radius: 50%; background: var(--deep-red); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #FFD700; font-weight: 900; font-size: 0.78em; }
+.member-info { flex: 1; min-width: 110px; }
+.member-name { font-weight: 900; font-size: 1.1em; color: #1a0a00; line-height: 1.2; }
+.member-sub { display: flex; gap: 8px; margin-top: 3px; flex-wrap: wrap; font-size: 0.78em; }
+.status-badge { padding: 4px 8px; border-radius: 20px; font-weight: 800; font-size: 0.72em; color: white; flex-shrink: 0; }
+.member-actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+/* ── DATE GROUP ── */
+.date-group { margin-bottom: 14px; }
+.date-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 2px solid #FFE0B2; flex-wrap: wrap; gap: 6px; }
+.date-title { color: var(--deep-red); font-weight: 900; font-size: 1.15em; }
+.date-sub { color: #aaa; font-size: 0.78em; margin-top: 2px; }
+.date-stats { text-align: right; }
+.date-stats div { font-weight: 700; font-size: 0.85em; }
+
+/* ── FILTER PILLS ── */
+.filter-row { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 12px; }
+.pill { padding: 8px 14px; border-radius: 20px; border: 1.5px solid; flex-shrink: 0; cursor: pointer; font-weight: 700; font-size: 0.78em; background: white; }
+.pill.active { background: var(--deep-red); color: #FFD700; border-color: var(--deep-red); }
+.pill:not(.active) { color: var(--deep-red); border-color: var(--saffron); }
+
+/* ── STATUS FILTER ── */
+.status-filters { display: flex; gap: 8px; margin-bottom: 10px; }
+.status-btn { flex: 1; padding: 10px 6px; border-radius: 12px; cursor: pointer; border: 2px solid; font-weight: 800; font-size: 0.82em; text-align: center; }
+.status-btn.active { border-color: transparent !important; }
+
+/* ── SUMMARY CARD ── */
+.summary-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid #FFE0B2; }
+.summary-row .label { font-size: 1em; }
+.summary-row .value { font-weight: 800; font-size: 1.05em; }
+.summary-total { display: flex; justify-content: space-between; align-items: center; background: rgba(0,100,0,0.08); border-radius: 12px; padding: 12px 10px; margin: 8px 0 16px; }
+.net-balance-card { border-radius: 16px; padding: 22px; text-align: center; }
+.net-balance-card .label { color: rgba(255,255,255,0.7); font-size: 0.9em; margin-bottom: 6px; }
+.net-balance-card .amount { color: #FFD700; font-size: 2.8em; font-weight: 900; line-height: 1; }
+.net-balance-card .status { color: white; font-size: 1.2em; margin-top: 10px; font-weight: 900; }
+
+/* ── HAMBURGER ── */
+.hamburger { background: rgba(255,215,0,0.15); border: 1.5px solid rgba(255,215,0,0.5); border-radius: 10px; cursor: pointer; padding: 7px 10px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; align-items: center; justify-content: center; }
+.hamburger span { width: 20px; height: 2.5px; background: #FFD700; border-radius: 2px; display: block; }
+
+/* ── DRAWER ── */
+.drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; display: none; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(320px, 88vw); background: var(--t-drawer-bg); z-index: 1001; box-shadow: -6px 0 24px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; transform: translateX(100%); transition: transform 0.25s ease; }
+.drawer.open { transform: translateX(0); }
+.drawer-header { background: linear-gradient(135deg,#6B1000,#CC4400); padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; }
+.drawer-header-title { display: flex; align-items: center; gap: 10px; color: #FFD700; font-weight: 900; font-size: 1.1em; }
+.drawer-body { flex: 1; overflow-y: auto; padding: 14px; }
+.drawer-section { margin-bottom: 8px; border-radius: 14px; overflow: hidden; border: 1.5px solid #FFE0B2; }
+.drawer-section-header { width: 100%; padding: 13px 16px; background: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; color: #333; }
+.drawer-section-header.active { background: linear-gradient(135deg,#8B2000,#CC4400); color: #FFD700; border-color: var(--saffron); }
+.drawer-section-body { padding: 0 14px 14px; background: #fff8f0; display: none; }
+.drawer-section-body.open { display: block; }
+.drawer-footer { margin-top: 14px; border-top: 1px solid #FFE0B2; padding-top: 14px; }
+
+/* ── MODAL ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1200; padding: 16px; display: none; }
+.modal-overlay.open { display: flex; }
+.modal { background: white; border-radius: 20px; padding: 24px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.modal-title { font-weight: 900; font-size: 1.2em; margin-bottom: 16px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 16px; }
+.modal-actions .btn { flex: 1; }
+
+/* ── ADMIN SECTION SPECIFIC ── */
+.user-row { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #FFE0B2; flex-wrap: wrap; }
+.user-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--deep-red); display: flex; align-items: center; justify-content: center; color: #FFD700; font-weight: 900; font-size: 1em; flex-shrink: 0; overflow: hidden; }
+.user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.user-info { flex: 1; min-width: 100px; }
+.user-name { font-weight: 700; font-size: 0.95em; }
+.user-email { font-size: 0.78em; color: #888; }
+.user-role { font-size: 0.72em; padding: 3px 10px; border-radius: 20px; font-weight: 800; }
+.role-admin { background: rgba(139,0,0,0.15); color: var(--deep-red); }
+.role-member { background: rgba(0,100,0,0.1); color: var(--green); }
+.role-pending { background: rgba(200,100,0,0.12); color: #994400; }
+
+/* ── CLOUD BADGE ── */
+.cloud-badge { font-size: 0.75em; padding: 4px 10px; border-radius: 10px; font-weight: 700; }
+.cloud-saving { background: rgba(255,200,0,0.2); color: #FFD700; border: 1px solid #FFD700; }
+.cloud-saved { background: rgba(0,200,0,0.2); color: #90EE90; border: 1px solid #90EE90; }
+
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.85); }
+  70%  { transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes floatOm {
+  0%,100% { transform: translateY(0px) rotate(-3deg); }
+  50%      { transform: translateY(-8px) rotate(3deg); }
+}
+@keyframes ripple {
+  0%   { transform: scale(0); opacity: 0.6; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+.anim-fadeup  { animation: fadeInUp 0.35s ease both; }
+.anim-fadein  { animation: fadeIn 0.3s ease both; }
+.anim-slidein { animation: slideInRight 0.3s ease both; }
+.anim-popin   { animation: popIn 0.3s cubic-bezier(.34,1.56,.64,1) both; }
+
+/* Staggered children */
+.stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger > *:nth-child(2) { animation-delay: 0.10s; }
+.stagger > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger > *:nth-child(4) { animation-delay: 0.20s; }
+.stagger > *:nth-child(5) { animation-delay: 0.25s; }
+
+/* Floating Om logo */
+.om-float { animation: floatOm 3s ease-in-out infinite; }
+
+/* Pulse on important numbers */
+.pulse { animation: pulse 2s ease-in-out infinite; }
+
+/* Ripple button effect */
+.btn { position: relative; overflow: hidden; }
+.btn::after { content:''; position:absolute; border-radius:50%; background:rgba(255,255,255,0.3); width:10px; height:10px; top:50%; left:50%; transform:scale(0); pointer-events:none; }
+.btn:active::after { animation: ripple 0.5s ease-out; }
+
+/* Card hover lift */
+.card { transition: transform 0.18s ease, box-shadow 0.18s ease; }
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--t-card-shadow); }
+
+/* Tab transition */
+.admin-tab { transition: all 0.2s ease; }
+
+/* Member card hover */
+.member-card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.member-card:hover { transform: translateX(3px); }
+
+/* Smooth number change */
+.big-num { transition: all 0.4s ease; }
+
+/* Gradient text for totals */
+.grad-text { background: linear-gradient(135deg,var(--t-btn1),var(--t-btn2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; font-weight:900; }
+
+/* Om logo glow */
+.om-logo { transition: box-shadow 0.3s; }
+.om-logo:hover { box-shadow: 0 0 20px rgba(255,215,0,0.6); }
+
+/* Settings page specific */
+.theme-swatch { width:44px; height:44px; border-radius:50%; cursor:pointer; border:3px solid transparent; transition:all 0.2s; display:flex; align-items:center; justify-content:center; font-size:1.2em; }
+.theme-swatch:hover { transform: scale(1.15); }
+.theme-swatch.selected { border-color: white; box-shadow: 0 0 0 3px var(--t-btn2), 0 4px 12px rgba(0,0,0,0.3); }
+
+/* Profile card */
+.profile-card { background: linear-gradient(135deg,var(--t-header1),var(--t-header3)); border-radius:20px; padding:20px; text-align:center; margin-bottom:16px; color:white; position:relative; overflow:hidden; }
+.profile-card::before { content:'ॐ'; position:absolute; right:-10px; top:-10px; font-size:80px; opacity:0.07; font-family:Georgia,serif; }
+.profile-avatar { width:70px; height:70px; border-radius:50%; background:rgba(255,255,255,0.2); border:3px solid rgba(255,215,0,0.6); margin:0 auto 10px; display:flex; align-items:center; justify-content:center; font-size:1.8em; font-weight:900; color:#FFD700; overflow:hidden; }
+.profile-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.profile-name { font-weight:900; font-size:1.15em; color:#FFD700; }
+.profile-email { font-size:0.8em; opacity:0.8; margin-top:3px; }
+.profile-role-badge { display:inline-block; margin-top:8px; background:rgba(255,215,0,0.2); color:#FFD700; border:1px solid rgba(255,215,0,0.4); border-radius:20px; padding:4px 14px; font-size:0.8em; font-weight:800; }
+
+/* No data */
+.no-data { text-align:center; color:#aaa; padding:20px; font-size:0.95em; }
+
+/* Accordion arrow */
+.accordion-arrow { transition: transform 0.2s; display:inline-block; }
+.accordion-arrow.open { transform: rotate(90deg); }
+
+/* ── NOTIFY ── */
+.notify { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: white; padding: 12px 24px; border-radius: 30px; font-weight: 700; font-size: 0.9em; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; max-width: 90vw; text-align: center; }
+.notify.show { opacity: 1; }
+
+/* ── LOCK SCREEN ── */
+#lock-screen {
+  min-height: 100vh;
+  background: linear-gradient(135deg,#1a0500,#6B1000,#CC4400);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+
+/* ── MISC ── */
+.text-center { text-align: center; }
+.text-muted { color: #aaa; }
+.text-red { color: var(--red); }
+.text-green { color: var(--green); }
+.text-gold { color: var(--gold); }
+.fw9 { font-weight: 900; }
+.hidden { display: none !important; }
+.flex { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.gap8 { gap: 8px; }
+.gap10 { gap: 10px; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.w100 { width: 100%; }
+hr { border: none; border-top: 1px solid #FFE0B2; margin: 12px 0; }
+.search-inp { width: 100%; padding: 11px 14px; border-radius: 11px; border: 2px solid #FFB347; font-size: 1em; outline: none; background: white; margin-bottom: 10px; }
+.no-data { text-align: center; color: #aaa; font-size: 1.1em; padding: 30px; }
+
+/* ── SETUP STEPS ── */
+.step { display: none; }
+.step.active { display: block; }
+.step-indicator { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+.step-dot { width: 8px; height: 8px; border-radius: 50%; background: #FFD700; opacity: 0.3; }
+.step-dot.active { opacity: 1; }
+
+@media (max-width: 400px) {
+  .member-name { font-size: 1em; }
+  .btn { font-size: 0.92em; padding: 10px 14px; }
+}
+
+.accordion-arrow { transition: transform 0.2s; display: inline-block; }
+.accordion-arrow.open { transform: rotate(90deg); }
+
+.exp-form-card { border: 2px solid var(--saffron); }
+</style>
+</head>
+<body>
+
+<!-- ══ NOTIFICATION TOAST ══ -->
+<div class="notify" id="notify"></div>
+
+<!-- ══ LOADING ══ -->
+<div id="loading-screen">
+  <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#6B0000,#CC3300);display:flex;align-items:center;justify-content:center;margin-bottom:8px;">
+    <span style="color:#FFD700;font-size:2em;font-family:Georgia,serif;">ॐ</span>
+  </div>
+  <div class="spinner"></div>
+  <div class="loading-text">Tipi Puja Committee</div>
+</div>
+
+<!-- ══ FIREBASE CONFIG SETUP ══ -->
+<div id="setup-screen" class="hidden">
+  <div class="setup-card">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#6B0000,#CC3300);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+        <span style="color:#FFD700;font-size:2em;font-family:Georgia,serif;">ॐ</span>
+      </div>
+      <h2>Firebase Setup Required</h2>
+      <p>To enable Google login &amp; real-time sync, paste your Firebase configuration below.</p>
+    </div>
+
+    <div id="setup-step-1" class="step active">
+      <div style="background:#FFF3E0;border-radius:12px;padding:14px;margin-bottom:16px;font-size:0.85em;color:#7a4a00;line-height:1.7;">
+        <strong>📋 How to get Firebase config (5 minutes):</strong><br/>
+        1. Go to <strong>console.firebase.google.com</strong><br/>
+        2. Click <strong>"Create Project"</strong> → name it "tipi-puja"<br/>
+        3. Go to <strong>Project Settings → General</strong><br/>
+        4. Scroll to <strong>"Your apps"</strong> → click Web icon (&lt;/&gt;)<br/>
+        5. Copy the <strong>firebaseConfig</strong> object<br/>
+        6. Enable <strong>Google Sign-In</strong> in Authentication<br/>
+        7. Enable <strong>Realtime Database</strong> → start in test mode<br/>
+        8. ⚠️ <strong>Realtime Database → Rules tab → Replace with:</strong>
+        <pre style="background:#fff3;border-radius:8px;padding:10px;margin-top:8px;font-size:0.82em;white-space:pre-wrap;border:1px solid #FFB347;overflow-x:auto;">{
+  "rules": {
+    "users": {
+      ".read": "auth != null",
+      "$uid": { ".write": "auth != null" }
+    },
+    "settings": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "puja_data": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}</pre>
+        Then click <strong>Publish</strong>. This blocks all unauthenticated access.
+      </div>
+      <label class="lbl">Paste Firebase Config JSON</label>
+      <textarea id="firebase-config-input" class="inp" rows="8" style="font-family:monospace;font-size:0.82em;resize:vertical;" placeholder='{
+  "apiKey": "AIza...",
+  "authDomain": "your-app.firebaseapp.com",
+  "databaseURL": "https://your-app-default-rtdb.firebaseio.com",
+  "projectId": "your-app",
+  "storageBucket": "your-app.appspot.com",
+  "messagingSenderId": "123456",
+  "appId": "1:123456:web:abcdef"
+}'></textarea>
+      <button class="setup-btn btn-saffron" onclick="initFirebase()">🔥 Connect Firebase</button>
+      <p class="setup-note">Your data stays in your own Firebase project. Anthropic cannot access it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PENDING APPROVAL ══ -->
+<div id="pending-screen" class="hidden">
+  <div class="pending-card">
+    <div class="pending-icon">🔒</div>
+    <h2>অ্যাক্সেস সীমিত</h2>
+    <p style="color:#666;margin-bottom:8px;">আপনি সাইন ইন করেছেন:</p>
+    <p><strong id="pending-email" style="color:#8B2000;"></strong></p>
+    <p style="margin-top:12px;color:#555;line-height:1.7;font-size:0.92em;">এই অ্যাপটি শুধুমাত্র <strong>টিপি সার্বজনীন পূজা কমিটির</strong> অনুমোদিত সদস্যদের জন্য।<br/>অ্যাক্সেসের জন্য কমিটির অ্যাডমিনের সাথে যোগাযোগ করুন।</p>
+    <div style="margin-top:14px;padding:12px 16px;background:#FFF3E0;border-radius:12px;font-size:0.85em;color:#7a4a00;line-height:1.6;">
+      ⏳ আপনার অনুরোধ পর্যালোচনা করা হচ্ছে...<br/>
+      Admin অনুমোদন করলে স্বয়ংক্রিয়ভাবে প্রবেশ পাবেন।
+    </div>
+    <button class="setup-btn btn-saffron" onclick="signOut()" style="margin-top:16px;">🚪 সাইন আউট করুন</button>
+  </div>
+</div>
+
+<!-- ══ LOCK SCREEN ══ -->
+<div id="lock-screen" class="hidden">
+  <div class="setup-card">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-size:3em;margin-bottom:8px;">🔒</div>
+      <h2>App is Locked</h2>
+      <p>Enter the Admin password to unlock.</p>
+    </div>
+    <input type="password" id="lock-password-input" class="inp mb12" placeholder="Enter password…"/>
+    <button class="setup-btn btn-saffron" onclick="checkLockPassword()">🔓 Unlock</button>
+    <div style="text-align:center;margin-top:10px;">
+      <button style="background:none;border:none;color:var(--saffron);cursor:pointer;font-size:0.9em;" onclick="signOut()">Sign out instead</button>
+    </div>
+    <div id="lock-error" style="color:var(--red);text-align:center;margin-top:8px;font-size:0.88em;display:none;"></div>
+  </div>
+</div>
+
+<!-- ══ MAIN APP ══ -->
+<div id="admin-panel" class="hidden">
+
+  <!-- Header -->
+  <div class="admin-header">
+    <div class="om-logo">ॐ</div>
+    <div class="header-title">
+      <div class="app-name" id="header-app-name">Tipi Sarbajanin Puja Committee</div>
+      <div class="sub" id="header-sub"></div>
+    </div>
+    <div id="cloud-badge" class="cloud-badge hidden"></div>
+    <button class="header-btn" id="back-btn" onclick="goBack()" style="display:none;">← Back</button>
+    <button onclick="renderSettingsPage()" style="background:rgba(255,215,0,0.15);border:1.5px solid rgba(255,215,0,0.5);border-radius:10px;cursor:pointer;padding:7px 10px;color:#FFD700;font-size:1.2em;flex-shrink:0;" title="Settings">⚙️</button>
+    <button class="hamburger" onclick="openDrawer()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Dynamic content rendered by JS -->
+  <div id="app-content"></div>
+</div>
+
+<!-- ══ DRAWER MENU ══ -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-header-title">
+      <div class="om-logo" style="width:34px;height:34px;font-size:1.1em;">ॐ</div>
+      <span id="drawer-title">Menu</span>
+    </div>
+    <button class="header-btn" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+<!-- ══ MODALS ══ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════
+const STATE = {
+  db: null, auth: null, user: null, userRole: null,
+  lang: 'bn', fs: 17, theme: 'default',
+  year: new Date().getFullYear(), puja: null, setupDone: false,
+  tab: 'collection',
+  data: {}, // local mirror of firebase data
+  adminSettings: { password: '', locked: false, approvedUsers: {} },
+  cloudStatus: 'idle', cloudTimer: null,
+};
+
+// ══════════════════════════════════════════════════════════════
+// TRANSLATIONS
+// ══════════════════════════════════════════════════════════════
+const T = {
+  en: {
+    appName:"Tipi Sarbajanin Puja Committee",
+    year:"Year", selectYear:"Select Year & Puja", durgaPuja:"Durga Puja", charakPuja:"Charak Puja",
+    collection:"Collection", expenditure:"Expenditure", balance:"Balance Sheet",
+    programme:"Programme", villageCollection:"Village Collection",
+    otherCollection:"Other Collection", totalCollection:"Total Collection",
+    name:"Name", actual:"Actual (₹)", paid:"Paid (₹)", due:"Due (₹)",
+    addMember:"+ Add Member", history:"Deleted History", addName:"Enter full name...", addMore:"Add Another",
+    otherAmt:"Amount", otherDesc:"Description", addOther:"Add", total:"Total", date:"Payment Date",
+    expCategory:"General Expenditure", item:"Item / Description", cost:"Cost (₹)", addItem:"+ Add Item",
+    totalDay:"Day Total", totalOverall:"Total", balSheet:"Balance Sheet",
+    totalIncome:"Total Income", totalExpense:"Total Expense",
+    netBalance:"Net Balance", surplus:"SURPLUS ✅", deficit:"DEFICIT ⚠️",
+    restore:"Restore", noHistory:"No deleted records",
+    save:"Save", cancel:"Cancel", update:"Update",
+    search:"🔍 Search by name...", noMembers:"No members yet.",
+    cloudSaving:"Saving…", cloudSaved:"☁️ Synced",
+    export:"📤 Export JSON", import:"📥 Import JSON", sl:"SL",
+    expHistory:"Deleted Expenses", progHistory:"Deleted Programme",
+    noPrevYear:"No previous year data.", prevYearCopied:"✅ Members copied!",
+    notPaid:"Not Paid", partPaid:"Part Paid", fullPaid:"Paid ✓", enterPaid:"Enter amount paid",
+    allDates:"All Dates", noDate:"No Date", filterAll:"All", filterPaid:"✅ Fully Paid", filterDue:"⏳ Has Due",
+    menuTitle:"Menu", menuLanguage:"🌐 Language", menuFont:"🔤 Font Size",
+    menuAbout:"ℹ️ About", menuAdmin:"👑 Admin Panel",
+    setupTitle:"Member Setup", setupSub:"How would you like to set up members?",
+    setupAddNew:"➕ Add Members Manually", setupCopyPrev:"📋 Copy from Previous Year",
+    back:"← Back", undo:"Undo Last",
+    adminPanel:"Admin Panel", approvedUsers:"Approved Users",
+    pendingUsers:"Pending Approval", appSettings:"App Settings",
+    approve:"✅ Approve", deny:"❌ Remove", makeAdmin:"👑 Make Admin",
+    setPassword:"Set Lock Password", lockApp:"🔒 Lock App", unlockApp:"🔓 Unlock App",
+    passwordSet:"✅ Password set!", passwordCleared:"Password cleared.",
+    appLocked:"App is now locked.", appUnlocked:"App is now unlocked.",
+    noUsers:"No users yet.", noPending:"No pending approvals.",
+    signOut:"Sign Out", signedInAs:"Signed in as",
+    viewOnly:"View Only Mode", adminOnly:"Admin Only",
+    youAreAdmin:"👑 You are Admin",
+    editMember:"Edit Member", editExpense:"Edit Expense", editProg:"Edit Programme",
+    deleteConfirm:"Are you sure?",
+  },
+  bn: {
+    appName:"টিপি সার্বজনীন পূজা কমিটি",
+    year:"বছর", selectYear:"বছর ও পূজা বেছে নিন", durgaPuja:"দুর্গা পূজা", charakPuja:"চরক পূজা",
+    collection:"সংগ্রহ", expenditure:"ব্যয়", balance:"ব্যালেন্স শিট",
+    programme:"অনুষ্ঠান", villageCollection:"গ্রাম সংগ্রহ",
+    otherCollection:"অন্যান্য সংগ্রহ", totalCollection:"মোট সংগ্রহ",
+    name:"নাম", actual:"প্রযোজ্য (₹)", paid:"প্রদত্ত (₹)", due:"বাকি (₹)",
+    addMember:"+ সদস্য যোগ", history:"মোছা ইতিহাস", addName:"পুরো নাম লিখুন...", addMore:"আরো যোগ করুন",
+    otherAmt:"পরিমাণ", otherDesc:"বিবরণ", addOther:"যোগ করুন", total:"মোট", date:"তারিখ",
+    expCategory:"সাধারণ ব্যয়", item:"বিষয় / বিবরণ", cost:"খরচ (₹)", addItem:"+ আইটেম যোগ",
+    totalDay:"দিনের মোট", totalOverall:"মোট", balSheet:"ব্যালেন্স শিট",
+    totalIncome:"মোট আয়", totalExpense:"মোট ব্যয়",
+    netBalance:"নিট ব্যালেন্স", surplus:"উদ্বৃত্ত ✅", deficit:"ঘাটতি ⚠️",
+    restore:"পুনরুদ্ধার", noHistory:"মোছা রেকর্ড নেই",
+    save:"সংরক্ষণ", cancel:"বাতিল", update:"আপডেট",
+    search:"🔍 নাম খুঁজুন...", noMembers:"কোনো সদস্য নেই।",
+    cloudSaving:"সংরক্ষণ হচ্ছে…", cloudSaved:"☁️ সিঙ্ক হয়েছে",
+    export:"📤 JSON এক্সপোর্ট", import:"📥 JSON ইম্পোর্ট", sl:"ক্র.",
+    expHistory:"মোছা সাধারণ ব্যয়", progHistory:"মোছা অনুষ্ঠান",
+    noPrevYear:"আগের বছরের তথ্য নেই।", prevYearCopied:"✅ কপি হয়েছে!",
+    notPaid:"বাকি", partPaid:"আংশিক", fullPaid:"পরিশোধ ✓", enterPaid:"প্রদত্ত পরিমাণ লিখুন",
+    allDates:"সব তারিখ", noDate:"তারিখ নেই", filterAll:"সব", filterPaid:"✅ সম্পূর্ণ", filterDue:"⏳ বাকি",
+    menuTitle:"মেনু", menuLanguage:"🌐 ভাষা", menuFont:"🔤 ফন্ট সাইজ",
+    menuAbout:"ℹ️ সম্পর্কে", menuAdmin:"👑 এডমিন প্যানেল",
+    setupTitle:"সদস্য সেটআপ", setupSub:"কীভাবে সদস্য যোগ করতে চান?",
+    setupAddNew:"➕ নতুন সদস্য যোগ করুন", setupCopyPrev:"📋 আগের বছর থেকে কপি করুন",
+    back:"← পিছনে", undo:"পূর্বে ফেরান",
+    adminPanel:"এডমিন প্যানেল", approvedUsers:"অনুমোদিত ব্যবহারকারী",
+    pendingUsers:"অনুমোদন বাকি", appSettings:"অ্যাপ সেটিংস",
+    approve:"✅ অনুমোদন", deny:"❌ সরান", makeAdmin:"👑 এডমিন করুন",
+    setPassword:"লক পাসওয়ার্ড সেট করুন", lockApp:"🔒 অ্যাপ লক করুন", unlockApp:"🔓 আনলক করুন",
+    passwordSet:"✅ পাসওয়ার্ড সেট হয়েছে!", passwordCleared:"পাসওয়ার্ড মুছা হয়েছে।",
+    appLocked:"অ্যাপ লক হয়েছে।", appUnlocked:"অ্যাপ আনলক হয়েছে।",
+    noUsers:"কোনো ব্যবহারকারী নেই।", noPending:"অনুমোদন বাকি নেই।",
+    signOut:"সাইন আউট", signedInAs:"সাইন ইন:",
+    viewOnly:"শুধু দেখা যাবে", adminOnly:"শুধু এডমিন",
+    youAreAdmin:"👑 আপনি এডমিন",
+    editMember:"সদস্য সম্পাদনা", editExpense:"ব্যয় সম্পাদনা", editProg:"অনুষ্ঠান সম্পাদনা",
+    deleteConfirm:"আপনি কি নিশ্চিত?",
+  }
+};
+
+function t(key) { return T[STATE.lang][key] || T.en[key] || key; }
+function fs() { return STATE.fs + 'px'; }
+
+// ══════════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════════
+function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function setFontSize(btn) {
+  var size = parseInt(btn.getAttribute('data-fsize'));
+  if (size) {
+    STATE.fs = size;
+    document.documentElement.style.setProperty('--fs', size + 'px');
+    renderSettingsPage();
+  }
+}
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function todayStr() { return new Date().toISOString().slice(0, 10); }
+function fmtDate(d) {
+  if (!d) return '';
+  try { return new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }); }
+  catch { return d; }
+}
+function sumArr(arr, k) { return (arr || []).reduce((s, x) => s + (parseFloat(x[k]) || 0), 0); }
+function sortAlpha(a) { return [...a].sort((x, y) => x.name.localeCompare(y.name, 'bn')); }
+function getKey(y, p) { return `${y}_${p}`; }
+function defaultPD() { return { members: [], deletedMembers: [], otherCollections: [], expenses: [], deletedExpenses: [] }; }
+function safeEmail(email) { return (email || '').replace(/\./g, '_dot_').replace(/@/g, '_at_'); }
+
+function notify(msg, duration = 3000) {
+  const el = document.getElementById('notify');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), duration);
+}
+
+function showScreen(id) {
+  ['loading-screen', 'setup-screen', 'pending-screen', 'lock-screen', 'admin-panel'].forEach(s => {
+    const el = document.getElementById(s);
+    if (el) el.classList.add('hidden');
+  });
+  const target = document.getElementById(id);
+  if (target) target.classList.remove('hidden');
+}
+
+function setCloudStatus(status) {
+  STATE.cloudStatus = status;
+  const badge = document.getElementById('cloud-badge');
+  if (!badge) return;
+  if (status === 'idle') { badge.classList.add('hidden'); return; }
+  badge.classList.remove('hidden');
+  if (status === 'saving') { badge.className = 'cloud-badge cloud-saving'; badge.textContent = '⏳ ' + t('cloudSaving'); }
+  else { badge.className = 'cloud-badge cloud-saved'; badge.textContent = t('cloudSaved'); clearTimeout(STATE.cloudTimer); STATE.cloudTimer = setTimeout(() => setCloudStatus('idle'), 3500); }
+}
+
+// ══════════════════════════════════════════════════════════════
+// FIREBASE INIT
+// ══════════════════════════════════════════════════════════════
+function initFirebase() {
+  let raw = document.getElementById('firebase-config-input').value.trim();
+  if (!raw) { notify('❌ Please paste your Firebase config first.'); return; }
+
+  // Strip HTML tags
+  raw = raw.replace(/<[^>]*>/g, '');
+
+  // Remove JS boilerplate: import statements, comments, const/var/let declarations, initialize lines
+  raw = raw.replace(/import\s+.*?;/g, '');
+  raw = raw.replace(/\/\/.*$/gm, '');
+  raw = raw.replace(/\/\*[\s\S]*?\*\//g, '');
+  raw = raw.replace(/const\s+\w+\s*=\s*initializeApp\s*\([^)]*\)\s*;?/g, '');
+  raw = raw.replace(/const\s+\w+\s*=\s*getAnalytics\s*\([^)]*\)\s*;?/g, '');
+  raw = raw.replace(/const\s+firebaseConfig\s*=/g, '');
+  raw = raw.replace(/export\s+default\s+\w+\s*;?/g, '');
+  raw = raw.trim();
+
+  // Extract just the { } object if extra text remains
+  var start = raw.indexOf('{');
+  var end = raw.lastIndexOf('}');
+  if (start === -1 || end === -1) {
+    notify('❌ Could not find { } in your config. Please paste the config object.'); return;
+  }
+  raw = raw.slice(start, end + 1).trim();
+
+  // Convert JS object keys to JSON keys (add quotes around unquoted keys)
+  raw = raw.replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":');
+
+  // Convert single quotes to double quotes for values
+  raw = raw.replace(/:\s*'([^']*)'/g, ': "$1"');
+
+  // Remove trailing commas before } or ]
+  raw = raw.replace(/,\s*([}\]])/g, '$1');
+
+  let config;
+  try {
+    config = JSON.parse(raw);
+  } catch (e) {
+    notify('❌ Could not read config. Please send a screenshot to get help.'); return;
+  }
+
+  if (!config.apiKey) {
+    notify('❌ apiKey is missing from your config.'); return;
+  }
+  if (!config.databaseURL) {
+    notify('❌ databaseURL is missing. Please enable Realtime Database in Firebase Console first.'); return;
+  }
+
+  try { localStorage.setItem('tipi_firebase_config', JSON.stringify(config)); } catch {}
+  startFirebase(config);
+}
+
+function startFirebase(config) {
+  try {
+    if (!firebase.apps.length) firebase.initializeApp(config);
+    STATE.db = firebase.database();
+    STATE.auth = firebase.auth();
+    setupAuthListener();
+  } catch (e) {
+    notify('❌ Firebase error: ' + e.message);
+    showScreen('setup-screen');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════════════════
+function setupAuthListener() {
+  showScreen('loading-screen');
+  STATE.auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+      showLoginScreen();
+      return;
+    }
+    STATE.user = user;
+    await registerOrFetchUser(user);
+  });
+}
+
+async function registerOrFetchUser(user) {
+  showScreen('loading-screen');
+  const emailKey = safeEmail(user.email);
+  const userRef = STATE.db.ref('users/' + emailKey);
+  const snap = await userRef.once('value');
+
+  if (!snap.exists()) {
+    // First time — check if any admin exists
+    const allUsersSnap = await STATE.db.ref('users').once('value');
+    const isFirstUser = !allUsersSnap.exists();
+    const role = isFirstUser ? 'admin' : 'pending';
+    await userRef.set({ name: user.displayName || '', email: user.email, photo: user.photoURL || '', role, createdAt: Date.now() });
+    STATE.userRole = role;
+  } else {
+    STATE.userRole = snap.val().role;
+  }
+
+  if (STATE.userRole === 'pending') {
+    document.getElementById('pending-email').textContent = user.email;
+    showScreen('pending-screen');
+    return;
+  }
+
+  // Check if app is locked
+  const lockSnap = await STATE.db.ref('settings/locked').once('value');
+  if (lockSnap.val() === true && STATE.userRole !== 'admin') {
+    showScreen('lock-screen');
+    return;
+  }
+
+  // Load settings & data
+  loadAppSettings();
+  startDataListeners();
+  showScreen('admin-panel');
+  renderApp();
+}
+
+async function signInWithGoogle() {
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await STATE.auth.signInWithPopup(provider);
+  } catch (e) {
+    notify('❌ Sign-in failed: ' + e.message);
+  }
+}
+
+function signOut() {
+  if (STATE.auth) STATE.auth.signOut();
+  STATE.user = null; STATE.userRole = null; STATE.data = {};
+  showLoginScreen();
+}
+
+function showLoginScreen() {
+  showScreen('admin-panel');
+  document.getElementById('app-content').innerHTML = `
+    <div style="min-height:100vh;background:linear-gradient(160deg,#FF6600,#E05000);display:flex;align-items:center;justify-content:center;padding:20px;">
+      <div class="card" style="max-width:400px;width:100%;text-align:center;padding:36px 28px;">
+        <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#6B0000,#CC3300);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+          <span style="color:#FFD700;font-size:2.2em;font-family:Georgia,serif;">ॐ</span>
+        </div>
+        <h2 style="color:var(--deep-red);font-size:1.4em;margin-bottom:6px;">Tipi Sarbajanin Puja Committee</h2>
+        <p style="color:#888;font-size:0.88em;margin-bottom:24px;line-height:1.5;">Sign in with your Google account to continue</p>
+        <button class="btn-google" onclick="signInWithGoogle()">
+          <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Sign in with Google
+        </button>
+        <p style="color:#aaa;font-size:0.78em;margin-top:16px;">Only approved committee members can access this app.</p>
+      </div>
+    </div>`;
+  document.getElementById('admin-panel').classList.remove('hidden');
+  ['loading-screen','setup-screen','pending-screen','lock-screen'].forEach(s => document.getElementById(s)?.classList.add('hidden'));
+}
+
+// ══════════════════════════════════════════════════════════════
+// REALTIME LISTENERS
+// ══════════════════════════════════════════════════════════════
+function loadAppSettings() {
+  STATE.db.ref('settings').on('value', snap => {
+    const s = snap.val() || {};
+    STATE.adminSettings = { password: s.password || '', locked: s.locked || false, approvedUsers: {} };
+  });
+}
+
+function startDataListeners() {
+  const year = STATE.year, puja = STATE.puja;
+  if (!year || !puja) return;
+  const key = getKey(year, puja);
+  STATE.db.ref('puja_data/' + key).on('value', snap => {
+    const val = snap.val() || defaultPD();
+    // Convert Firebase objects to arrays
+    val.members = objToArr(val.members);
+    val.deletedMembers = objToArr(val.deletedMembers);
+    val.otherCollections = objToArr(val.otherCollections);
+    val.expenses = objToArr(val.expenses);
+    val.deletedExpenses = objToArr(val.deletedExpenses);
+    STATE.data[key] = val;
+    setCloudStatus('saved');
+    if (STATE.setupDone) renderMainApp();
+  });
+}
+
+function objToArr(obj) {
+  if (!obj) return [];
+  if (Array.isArray(obj)) return obj.filter(Boolean);
+  return Object.values(obj);
+}
+
+// ══════════════════════════════════════════════════════════════
+// FIREBASE WRITE
+// ══════════════════════════════════════════════════════════════
+function writePD(updater) {
+  // Edit allowed for all signed-in users
+  const key = getKey(STATE.year, STATE.puja);
+  const cur = STATE.data[key] || defaultPD();
+  const next = updater(JSON.parse(JSON.stringify(cur)));
+  // Convert arrays to objects for Firebase
+  const toWrite = {
+    members: arrToObj(next.members),
+    deletedMembers: arrToObj(next.deletedMembers),
+    otherCollections: arrToObj(next.otherCollections),
+    expenses: arrToObj(next.expenses),
+    deletedExpenses: arrToObj(next.deletedExpenses),
+  };
+  setCloudStatus('saving');
+  STATE.db.ref('puja_data/' + key).set(toWrite).then(() => setCloudStatus('saved')).catch(e => { notify('❌ Sync error: ' + e.message); setCloudStatus('idle'); });
+}
+
+function arrToObj(arr) {
+  if (!arr || !arr.length) return null;
+  const obj = {};
+  arr.forEach(item => { if (item && item.id) obj[item.id] = item; });
+  return obj;
+}
+
+// ══════════════════════════════════════════════════════════════
+// COMPUTED
+// ══════════════════════════════════════════════════════════════
+function getPD() {
+  const key = getKey(STATE.year, STATE.puja);
+  return STATE.data[key] || defaultPD();
+}
+function getMembers() { return sortAlpha(getPD().members || []); }
+function getGeneralExp() { return (getPD().expenses || []).filter(e => e.category === 'expense'); }
+function getProgExp() { return (getPD().expenses || []).filter(e => e.category === 'programme'); }
+function getDelGenExp() { return (getPD().deletedExpenses || []).filter(e => e.category === 'expense'); }
+function getDelProgExp() { return (getPD().deletedExpenses || []).filter(e => e.category === 'programme'); }
+function payStatus(m) {
+  if ((m.actual || 0) > 0 && (m.actual || 0) <= (m.paid || 0)) return 'full';
+  if ((m.paid || 0) > 0) return 'part';
+  return 'none';
+}
+function payStatusStyle(st) {
+  return {
+    full: { bg: '#e8ffe8', border: '#4CAF50', text: '#006600', label: t('fullPaid') },
+    part: { bg: '#fff8e0', border: '#FFA000', text: '#7a4a00', label: t('partPaid') },
+    none: { bg: '#fff0f0', border: '#f44336', text: '#c00',    label: t('notPaid') },
+  }[st];
+}
+function groupByDate(arr, dateField) {
+  const g = {};
+  (arr || []).forEach(item => {
+    const d = item[dateField] || '__nodate__';
+    if (!g[d]) g[d] = [];
+    g[d].push(item);
+  });
+  return Object.entries(g).sort(([a], [b]) => {
+    if (a === '__nodate__') return 1; if (b === '__nodate__') return -1;
+    return a.localeCompare(b);
+  });
+}
+
+function isAdmin() { return STATE.userRole === 'admin'; }
+function canEdit() { return true; } // All signed-in users can edit
+
+// ══════════════════════════════════════════════════════════════
+// RENDER ENGINE
+// ══════════════════════════════════════════════════════════════
+function renderApp() {
+  if (!STATE.puja) { renderLanding(); return; }
+  if (!STATE.setupDone) { renderSetup(); return; }
+  renderMainApp();
+}
+
+// ── LANDING PAGE ──
+function renderLanding() {
+  const years = Array.from({ length: 12 }, (_, i) => new Date().getFullYear() - 3 + i);
+  document.getElementById('header-sub').textContent = '';
+  document.getElementById('back-btn').style.display = 'none';
+
+  document.getElementById('app-content').innerHTML = `
+    <div style="padding:20px 16px;max-width:520px;margin:0 auto;">
+      <div class="card anim-popIn" style="border:2px solid rgba(255,215,0,0.3);">
+        <div class="text-center mb14">
+          <div class="om-logo om-float" style="width:70px;height:70px;font-size:2.2em;margin:0 auto 12px;">ॐ</div>
+          <div style="color:var(--deep-red);font-weight:900;font-size:1.4em;">${t('selectYear')}</div>
+        </div>
+        <label class="lbl">${t('year')}</label>
+        <select class="inp mb14" onchange="STATE.year=+this.value">
+          ${years.map(y => '<option value="' + y + '" ' + (y===STATE.year?'selected':'') + '>' + y + '</option>').join('')}
+        </select>
+        <label class="lbl">${STATE.lang === 'en' ? 'Select Puja' : 'পূজা বেছে নিন'}</label>
+        <div class="row">
+          <button class="btn btn-primary" style="flex:1;flex-direction:column;gap:6px;padding:20px 10px;" onclick="selectPuja('durgaPuja')">
+            <span style="font-size:2em;">🪔</span>
+            <span>${t('durgaPuja')}</span>
+            <span style="opacity:0.7;font-size:0.8em;">${STATE.year}</span>
+          </button>
+          <button class="btn btn-blue" style="flex:1;flex-direction:column;gap:6px;padding:20px 10px;" onclick="selectPuja('charakPuja')">
+            <span style="font-size:2em;">🪔</span>
+            <span>${t('charakPuja')}</span>
+            <span style="opacity:0.7;font-size:0.8em;">${STATE.year}</span>
+          </button>
+        </div>
+        ${isAdmin() ? '<div style="margin-top:14px;text-align:center;"><span class="user-role role-admin">' + t('youAreAdmin') + '</span></div>' : ''}
+      </div>
+      <div style="text-align:center;color:rgba(255,255,255,0.7);font-size:0.82em;margin-top:8px;">
+        ${t('signedInAs')}: ${STATE.user?.email || ''}
+      </div>
+    </div>`;
+  renderDrawer();
+}
+
+function selectPuja(puja) {
+  STATE.puja = puja;
+  STATE.setupDone = false;
+  STATE.tab = 'collection';
+  // Start listener for this puja
+  startDataListeners();
+  renderSetup();
+}
+
+// ── SETUP PAGE ──
+function renderSetup() {
+  const prevKey = getKey(STATE.year - 1, STATE.puja);
+  const prevPD = STATE.data[prevKey];
+  const hasPrev = prevPD && (prevPD.members || []).length > 0;
+  document.getElementById('back-btn').style.display = 'block';
+  document.getElementById('header-sub').textContent = `${STATE.year} — ${t(STATE.puja)}`;
+
+  document.getElementById('app-content').innerHTML = `
+    <div style="padding:20px 16px;max-width:520px;margin:0 auto;">
+      <div class="card text-center mb14">
+        <div class="om-logo" style="width:52px;height:52px;font-size:1.7em;margin:0 auto 10px;">ॐ</div>
+        <div style="color:var(--deep-red);font-weight:900;font-size:1.3em;">${t('setupTitle')}</div>
+        <div style="color:#666;font-size:0.9em;margin-top:4px;">${STATE.year} — ${t(STATE.puja)}</div>
+        <div style="color:#888;font-size:0.82em;margin-top:6px;">${t('setupSub')}</div>
+      </div>
+      <button class="btn btn-primary w100" style="flex-direction:column;gap:6px;padding:22px 20px;border-radius:18px;text-align:left;margin-bottom:14px;" onclick="enterApp()">
+        <div style="font-size:1.2em;">${t('setupAddNew')}</div>
+        <div style="font-weight:400;font-size:0.85em;opacity:0.85;">Add member names and amounts one by one</div>
+      </button>
+      <button class="btn ${hasPrev ? 'btn-blue' : ''}" style="flex-direction:column;gap:6px;padding:22px 20px;border-radius:18px;text-align:left;margin-bottom:14px;width:100%;${hasPrev ? '' : 'background:#bbb;cursor:not-allowed;'}" ${hasPrev ? 'onclick="copyFromPrev()"' : 'disabled'}>
+        <div style="color:#FFD700;font-size:1.2em;">${t('setupCopyPrev')}</div>
+        <div style="color:rgba(255,215,0,0.8);font-weight:400;font-size:0.85em;">${hasPrev ? (prevPD.members||[]).length + ' জন সদস্য কপি হবে (' + (STATE.year-1) + ' থেকে)' : t('noPrevYear')}</div>
+      </button>
+    </div>`;
+}
+
+function enterApp() {
+  STATE.setupDone = true;
+  renderMainApp();
+}
+
+function copyFromPrev() {
+  const prevKey = getKey(STATE.year - 1, STATE.puja);
+  const prevPD = STATE.data[prevKey];
+  if (!prevPD || !(prevPD.members || []).length) { notify(t('noPrevYear')); return; }
+  writePD(cur => {
+    const existing = new Set((cur.members || []).map(m => m.name.trim().toLowerCase()));
+    const toAdd = (prevPD.members || []).filter(m => !existing.has(m.name.trim().toLowerCase()))
+      .map(m => ({ id: genId(), name: m.name, actual: m.actual || 0, paid: 0, payDate: '' }));
+    cur.members = sortAlpha([...(cur.members || []), ...toAdd]);
+    return cur;
+  });
+  notify(t('prevYearCopied'));
+  enterApp();
+}
+
+function goBack() {
+  if (STATE.setupDone) { STATE.setupDone = false; renderSetup(); }
+  else { STATE.puja = null; renderLanding(); }
+}
+
+// ── MAIN APP ──
+function renderMainApp() {
+  document.getElementById('back-btn').style.display = 'block';
+  document.getElementById('header-sub').textContent = STATE.year + ' — ' + t(STATE.puja) + ' (' + (STATE.userRole||'?') + ')';
+  const tabs = [
+    { id: 'collection', label: `💰 ${t('collection')}` },
+    { id: 'expenditure', label: `🧾 ${t('expenditure')}` },
+    { id: 'programme', label: `🎭 ${t('programme')}` },
+    { id: 'balance', label: `📊 ${t('balance')}` },
+  ];
+  const tabsHtml = tabs.map(tb => `
+    <button class="admin-tab ${STATE.tab === tb.id ? 'active' : ''}" onclick="switchTab('${tb.id}')">${tb.label}</button>
+  `).join('');
+
+  const contentId = 'tab-content-' + Date.now();
+  document.getElementById('app-content').innerHTML = `
+    <div class="admin-tabs">${tabsHtml}</div>
+    <div class="admin-content" id="${contentId}"></div>`;
+  renderTab(contentId);
+  renderDrawer();
+}
+
+function switchTab(tab) {
+  STATE.tab = tab;
+  renderMainApp();
+}
+
+function renderTab(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (STATE.tab === 'collection') el.innerHTML = renderCollectionTab();
+  else if (STATE.tab === 'expenditure') el.innerHTML = renderExpTab('expense');
+  else if (STATE.tab === 'programme') el.innerHTML = renderExpTab('programme');
+  else if (STATE.tab === 'balance') el.innerHTML = renderBalanceTab();
+}
+
+// ══════════════════════════════════════════════════════════════
+// COLLECTION TAB
+// ══════════════════════════════════════════════════════════════
+let _search = '', _filterDate = 'ALL', _filterStatus = 'ALL', _addingMember = false;
+let _memberForm = { name: '', actual: '', paid: '', payDate: todayStr() };
+
+function renderCollectionTab() {
+  const members = getMembers();
+  const filtered = members.filter(m => m.name.toLowerCase().includes(_search.toLowerCase()));
+  const totalActual = sumArr(members, 'actual');
+  const totalPaid = sumArr(members, 'paid');
+  const totalDue = totalActual - totalPaid;
+  const totalOther = sumArr(getPD().otherCollections || [], 'amount');
+  const totalCollection = totalPaid + totalOther;
+  const countPaid = members.filter(m => (m.actual || 0) > 0 && (m.actual || 0) <= (m.paid || 0)).length;
+  const countDue = members.filter(m => (m.actual || 0) > (m.paid || 0)).length;
+  const allPayDates = [...new Set(members.map(m => m.payDate || '').filter(Boolean))].sort();
+
+  let df = _filterDate === 'ALL' ? filtered : _filterDate === 'NONE' ? filtered.filter(m => !m.payDate) : filtered.filter(m => m.payDate === _filterDate);
+  if (_filterStatus === 'PAID') df = df.filter(m => (m.actual || 0) > 0 && (m.actual || 0) <= (m.paid || 0));
+  else if (_filterStatus === 'DUE') df = df.filter(m => (m.actual || 0) > (m.paid || 0));
+
+  const groups = groupByDate(df, 'payDate');
+
+  const addFormHtml = (STATE.user) ? `
+    <div style="display:flex;justify-content:center;margin-bottom:12px;">
+      <button class="btn btn-primary" style="min-width:200px;" onclick="toggleAddMember()">
+        ${_addingMember ? '✕ Close' : t('addMember')}
+      </button>
+    </div>
+    ${_addingMember ? `
+    <div class="card exp-form-card mb14">
+      <div class="card-title text-center">➕ ${t('addMember')}</div>
+      <label class="lbl">${t('name')}</label>
+      <input class="inp mb12" id="mf-name" placeholder="${t('addName')}" value="${_memberForm.name}" oninput="_memberForm.name=this.value"/>
+      <div class="row">
+        <div class="col"><label class="lbl">${t('actual')}</label><input class="inp" id="mf-actual" type="number" placeholder="₹" value="${_memberForm.actual}" oninput="_memberForm.actual=this.value"/></div>
+        <div class="col"><label class="lbl">${t('paid')}</label><input class="inp" id="mf-paid" type="number" placeholder="₹" value="${_memberForm.paid}" oninput="_memberForm.paid=this.value"/></div>
+        <div class="col" style="min-width:120px;"><label class="lbl">${t('date')}</label><input class="inp" id="mf-date" type="date" value="${_memberForm.payDate}" oninput="_memberForm.payDate=this.value"/></div>
+      </div>
+      <div class="row">
+        <button class="btn btn-primary" style="flex:1;" onclick="addMemberSave(true)">✔ ${t('save')} & ${t('addMore')}</button>
+        <button class="btn btn-secondary" style="flex:1;" onclick="addMemberSave(false)">✔ ${t('save')}</button>
+        <button class="btn btn-secondary" onclick="toggleAddMember()">✕</button>
+      </div>
+    </div>` : ''}
+  ` : '';
+
+  const historyPanel = `
+    <div class="row mb10">
+      <button class="btn btn-secondary btn-sm" style="flex:1;" onclick="toggleMemberHistory()">
+        🗑️ ${t('history')} (${(getPD().deletedMembers || []).length})
+      </button>
+    </div>
+    <div id="member-history-panel" class="hidden">
+      <div class="card" style="background:#fff8f0;border:1.5px solid #FFB347;">
+        ${renderHistoryList(getPD().deletedMembers || [], m => `${m.name} (₹${m.actual || 0})`, 'restoreMember')}
+      </div>
+    </div>`;
+
+  const statusBtns = `
+    <div class="status-filters mb10">
+      ${[{k:'ALL',l:t('filterAll'),c:members.length,bg:'var(--deep-red)',fg:'#FFD700'},
+         {k:'PAID',l:t('filterPaid'),c:countPaid,bg:'var(--green)',fg:'white'},
+         {k:'DUE',l:t('filterDue'),c:countDue,bg:'var(--red)',fg:'white'}].map(f => `
+        <button class="status-btn ${_filterStatus===f.k?'active':''}"
+          style="border-color:${f.bg};${_filterStatus===f.k?`background:${f.bg};color:${f.fg};`:`color:${f.bg};background:white;`}"
+          onclick="_filterStatus='${f.k}';renderMainApp();">
+          <div style="font-size:0.85em;">${f.l}</div>
+          <div style="font-size:1.2em;font-weight:900;">${f.c}</div>
+        </button>`).join('')}
+    </div>`;
+
+  const datePills = `
+    <div class="filter-row">
+      ${['ALL', ...allPayDates, 'NONE'].map(d => `
+        <button class="pill ${_filterDate===d?'active':''}" onclick="_filterDate='${d}';renderMainApp();">
+          ${d==='ALL'?t('allDates'):d==='NONE'?t('noDate'):fmtDate(d)}
+        </button>`).join('')}
+    </div>`;
+
+  const membersHtml = members.length === 0
+    ? `<div class="no-data">${t('noMembers')}</div>`
+    : groups.map(([dateKey, mems]) => {
+        const dayPaid = sumArr(mems, 'paid');
+        const dayActual = sumArr(mems, 'actual');
+        const dayDue = dayActual - dayPaid;
+        const isNoDate = dateKey === '__nodate__';
+        return `
+          <div class="card">
+            <div class="date-header">
+              <div>
+                <div class="date-title">${isNoDate ? '📋 ' + t('noDate') : '📅 ' + fmtDate(dateKey)}</div>
+                <div class="date-sub">${mems.length} ${STATE.lang === 'en' ? 'members' : 'জন'}</div>
+              </div>
+              <div class="date-stats">
+                <div class="text-green">Paid: ₹${dayPaid.toLocaleString()}</div>
+                <div class="text-red">Due: ₹${dayDue.toLocaleString()}</div>
+              </div>
+            </div>
+            ${mems.map((m, i) => {
+              const due = (m.actual || 0) - (m.paid || 0);
+              const st = payStatus(m);
+              const ss = payStatusStyle(st);
+              return `
+                <div class="member-card" style="background:${ss.bg};border-color:${ss.border};">
+                  <div class="member-badge">${i + 1}</div>
+                  <div class="member-info">
+                    <div class="member-name">${escHtml(m.name)}</div>
+                    <div class="member-sub">
+                      <span>Due: <strong style="color:${ss.text};">₹${due.toLocaleString()}</strong></span>
+                      <span style="color:#555;">Act:₹${(m.actual||0).toLocaleString()}</span>
+                      <span style="color:var(--green);">Paid:₹${(m.paid||0).toLocaleString()}</span>
+                    </div>
+                  </div>
+                  <div class="status-badge" style="background:${ss.border};">${ss.label}</div>
+                  ${canEdit() ? `
+                  <div class="member-actions">
+                    <button class="btn btn-edit" onclick="openEditMember('${m.id}')">✏️</button>
+                    <button class="btn btn-primary btn-sm" style="padding:8px 10px;" onclick="openPayModal('${m.id}')">💳</button>
+                    <button class="btn btn-danger-o" onclick="deleteMember('${m.id}')">🗑</button>
+                  </div>` : `
+                  <div class="member-actions">
+                    <button class="btn btn-primary btn-sm" style="padding:8px 10px;" onclick="openPayModal('${m.id}')">💳</button>
+                  </div>`}
+                </div>`;
+            }).join('')}
+          </div>`;
+      }).join('');
+
+  // Other collections
+  const others = getPD().otherCollections || [];
+  const otherHtml = `
+    <div class="card">
+      <div class="card-title">💼 ${t('otherCollection')}</div>
+      ${canEdit() ? `
+      <div class="row mb12">
+        <div style="flex:2;min-width:130px;"><label class="lbl">${t('otherDesc')}</label><input class="inp" id="other-desc" placeholder="${t('otherDesc')}"/></div>
+        <div style="flex:0 0 110px;"><label class="lbl">${t('otherAmt')}</label><input class="inp" id="other-amt" type="number" placeholder="₹"/></div>
+        <button class="btn btn-primary btn-sm" style="align-self:flex-end;" onclick="addOther()">${t('addOther')}</button>
+      </div>` : ''}
+      ${others.length > 0 ? `
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th style="width:36px;text-align:center;">${t('sl')}</th><th>${t('otherDesc')}</th><th style="text-align:right;">${t('otherAmt')}</th>${canEdit()?'<th style="width:50px;"></th>':''}</tr></thead>
+          <tbody>${others.map((o, i) => `
+            <tr><td style="text-align:center;font-weight:700;color:#8B3A00;">${i+1}</td>
+            <td style="font-weight:600;">${o.desc || '—'}</td>
+            <td style="text-align:right;font-weight:800;color:var(--green);">₹${(o.amount||0).toLocaleString()}</td>
+            ${canEdit() ? '<td><button class="btn btn-danger-o" onclick="deleteOther(\'' + o.id + '\')">🗑</button></td>' : ''}</tr>`).join('')}
+          </tbody>
+          <tfoot><tr style="background:rgba(139,0,0,0.07);"><td colspan="${canEdit()?3:2}" style="padding:10px;font-weight:800;color:var(--deep-red);">${t('total')}</td><td style="padding:10px;text-align:right;font-weight:900;color:var(--green);font-size:1.1em;">₹${totalOther.toLocaleString()}</td>${canEdit()?'<td></td>':''}</tr></tfoot>
+        </table>
+      </div>` : ''}
+    </div>`;
+
+  return `
+    ${addFormHtml}
+    ${canEdit() ? historyPanel : ''}
+    <input class="search-inp" placeholder="${t('search')}" value="${_search}" oninput="_search=this.value;renderMainApp();"/>
+    ${statusBtns}${datePills}${membersHtml}${otherHtml}
+    <div class="dark-card" style="background:linear-gradient(135deg,#005500,#007700);">
+      <div style="color:#FFD700;font-weight:900;font-size:1.1em;margin-bottom:8px;">💰 ${t('totalCollection')}</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px;">
+        <span style="color:white;">🏘️ ₹${totalPaid.toLocaleString()}</span>
+        <span style="color:white;">💼 ₹${totalOther.toLocaleString()}</span>
+        <span style="color:#FFCCCC;">⏳ Due: ₹${totalDue.toLocaleString()}</span>
+      </div>
+      <div style="color:#FFD700;font-size:2.5em;font-weight:900;">₹${totalCollection.toLocaleString()}</div>
+    </div>`;
+}
+
+function toggleAddMember() { _addingMember = !_addingMember; renderMainApp(); }
+function toggleMemberHistory() {
+  const el = document.getElementById('member-history-panel');
+  if (el) el.classList.toggle('hidden');
+}
+function renderHistoryList(items, labelFn, restoreFn) {
+  if (!items.length) return `<div class="no-data" style="padding:14px;">${t('noHistory')}</div>`;
+  return items.map((e, i) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #FFE0B2;gap:8px;flex-wrap:wrap;">
+      <div>
+        <span style="color:var(--deep-red);font-weight:700;margin-right:6px;">#${i+1}</span>
+        <span>${labelFn(e)}</span>
+        <div style="color:#bbb;font-size:0.78em;margin-top:2px;">${(e.deletedAt||'').slice(0,10)}</div>
+      </div>
+      <button class="btn btn-green-o btn-sm" onclick="${restoreFn}('${e.id}')">♻ ${t('restore')}</button>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// MEMBER ACTIONS
+// ══════════════════════════════════════════════════════════════
+function addMemberSave(keepOpen) {
+  const name = (document.getElementById('mf-name')?.value || '').trim();
+  const actual = parseFloat(document.getElementById('mf-actual')?.value) || 0;
+  const paid = parseFloat(document.getElementById('mf-paid')?.value) || 0;
+  const payDate = document.getElementById('mf-date')?.value || '';
+  if (!name) { notify('❌ Name is required.'); return; }
+  writePD(pd => {
+    pd.members = sortAlpha([...(pd.members || []), { id: genId(), name, actual, paid, payDate: paid ? payDate : '' }]);
+    return pd;
+  });
+  _memberForm = { name: '', actual: '', paid: '', payDate: todayStr() };
+  if (!keepOpen) _addingMember = false;
+  notify('✅ Member added!');
+  setTimeout(renderMainApp, 400);
+}
+
+function deleteMember(id) {
+  writePD(pd => {
+    const m = (pd.members || []).find(x => x.id === id);
+    if (!m) return pd;
+    pd.deletedMembers = [...(pd.deletedMembers || []), { ...m, deletedAt: new Date().toISOString() }];
+    pd.members = (pd.members || []).filter(x => x.id !== id);
+    return pd;
+  });
+  notify('🗑️ Member deleted. Restore from history.');
+  setTimeout(renderMainApp, 400);
+}
+
+function restoreMember(id) {
+  writePD(pd => {
+    const m = (pd.deletedMembers || []).find(x => x.id === id);
+    if (!m) return pd;
+    pd.members = sortAlpha([...(pd.members || []), { ...m }]);
+    pd.deletedMembers = (pd.deletedMembers || []).filter(x => x.id !== id);
+    return pd;
+  });
+  notify('✅ Member restored!');
+  setTimeout(renderMainApp, 400);
+}
+
+function openEditMember(id) {
+  const m = getMembers().find(x => x.id === id);
+  if (!m) return;
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-title" style="color:var(--blue);">✏️ ${t('editMember')}</div>
+    <label class="lbl">${t('name')}</label>
+    <input class="inp mb12" id="em-name" value="${m.name}"/>
+    <div class="row">
+      <div class="col"><label class="lbl">${t('actual')}</label><input class="inp" id="em-actual" type="number" value="${m.actual||''}"/></div>
+      <div class="col"><label class="lbl">${t('paid')}</label><input class="inp" id="em-paid" type="number" value="${m.paid||''}"/></div>
+    </div>
+    <label class="lbl">${t('date')}</label>
+    <input class="inp mb14" id="em-date" type="date" value="${m.payDate||''}"/>
+    <div class="modal-actions">
+      <button class="btn btn-blue" onclick="saveEditMember('${id}')">✔ ${t('update')}</button>
+      <button class="btn btn-secondary" onclick="closeModal()">${t('cancel')}</button>
+    </div>`;
+  openModal();
+}
+
+function saveEditMember(id) {
+  const name = (document.getElementById('em-name')?.value || '').trim();
+  if (!name) { notify('❌ Name required.'); return; }
+  writePD(pd => {
+    pd.members = sortAlpha((pd.members || []).map(m => m.id === id ? {
+      ...m, name,
+      actual: parseFloat(document.getElementById('em-actual')?.value) || 0,
+      paid: parseFloat(document.getElementById('em-paid')?.value) || 0,
+      payDate: document.getElementById('em-date')?.value || '',
+    } : m));
+    return pd;
+  });
+  closeModal(); notify('✅ Updated!');
+  setTimeout(renderMainApp, 400);
+}
+
+function openPayModal(id) {
+  const m = getMembers().find(x => x.id === id);
+  if (!m) return;
+  const remaining = (m.actual || 0) - (m.paid || 0);
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-title" style="color:var(--deep-red);">💳 Payment</div>
+    <div style="font-weight:900;font-size:1.3em;color:#1a0a00;margin-bottom:10px;">${m.name}</div>
+    <div style="display:flex;gap:14px;margin-bottom:14px;font-size:0.9em;flex-wrap:wrap;">
+      <span>Actual: <strong>₹${(m.actual||0).toLocaleString()}</strong></span>
+      <span style="color:${remaining>0?'var(--red)':'var(--green)'};">Remaining: <strong>₹${Math.max(0,remaining).toLocaleString()}</strong></span>
+    </div>
+    <label class="lbl">${t('enterPaid')}</label>
+    <input class="inp mb12" id="pay-amount" type="number" placeholder="₹" value="${m.paid||''}"/>
+    <label class="lbl">${t('date')}</label>
+    <input class="inp mb14" id="pay-date" type="date" value="${m.payDate||todayStr()}"/>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="submitPay('${id}')">✔ ${t('save')}</button>
+      <button class="btn btn-secondary" onclick="closeModal()">${t('cancel')}</button>
+    </div>`;
+  openModal();
+}
+
+function submitPay(id) {
+  const paid = parseFloat(document.getElementById('pay-amount')?.value) || 0;
+  const payDate = document.getElementById('pay-date')?.value || '';
+  writePD(pd => {
+    pd.members = (pd.members || []).map(m => m.id === id ? { ...m, paid, payDate } : m);
+    return pd;
+  });
+  closeModal(); notify('✅ Payment saved!');
+  setTimeout(renderMainApp, 400);
+}
+
+function addOther() {
+  const desc = document.getElementById('other-desc')?.value || '';
+  const amount = parseFloat(document.getElementById('other-amt')?.value) || 0;
+  if (!amount) { notify('❌ Amount required.'); return; }
+  writePD(pd => {
+    pd.otherCollections = [...(pd.otherCollections || []), { id: genId(), desc, amount }];
+    return pd;
+  });
+  notify('✅ Added!');
+  setTimeout(renderMainApp, 400);
+}
+
+function deleteOther(id) {
+  writePD(pd => { pd.otherCollections = (pd.otherCollections || []).filter(x => x.id !== id); return pd; });
+  setTimeout(renderMainApp, 400);
+}
+
+// ══════════════════════════════════════════════════════════════
+// EXPENSE TAB
+// ══════════════════════════════════════════════════════════════
+let _expForm = { date: todayStr(), item: '', cost: '' };
+let _showExpHistory = false, _showProgHistory = false;
+
+function renderExpTab(category) {
+  const isExp = category === 'expense';
+  const items = isExp ? getGeneralExp() : getProgExp();
+  const delItems = isExp ? getDelGenExp() : getDelProgExp();
+  const total = sumArr(items, 'cost');
+  const showH = isExp ? _showExpHistory : _showProgHistory;
+
+  const groups = groupByDate(items, 'date');
+
+  var histList = renderHistoryList(delItems, function(e){ return (e.date||'') + ' — ' + e.item + ' (₹' + e.cost + ')'; }, 'restoreExpense');
+  return `
+    <div class="card exp-form-card">
+      <div class="card-title">${isExp ? '🧾' : '🎭'} ${isExp ? t('expCategory') : t('programme')}</div>
+      <label class="lbl">1. ${t('date')}</label>
+      <input class="inp mb12" id="exp-date" type="date" value="${_expForm.date}" oninput="_expForm.date=this.value"/>
+      <label class="lbl">2. ${t('item')}</label>
+      <input class="inp mb12" id="exp-item" placeholder="${t('item')}" value="${_expForm.item}" oninput="_expForm.item=this.value"/>
+      <label class="lbl">3. ${t('cost')}</label>
+      <input class="inp mb14" id="exp-cost" type="number" placeholder="₹ 0" value="${_expForm.cost}" oninput="_expForm.cost=this.value"/>
+      <button class="btn btn-primary w100" onclick="addExpense('${category}')">${t('addItem')}</button>
+    </div>
+    <div class="row mb12">
+      <button class="btn btn-secondary btn-sm" style="flex:1;" onclick="toggleExpHistory('${category}')">
+        📜 ${isExp ? t('expHistory') : t('progHistory')} (${delItems.length})
+      </button>
+    </div>
+    <div id="exp-history-panel-${category}" class="${showH ? '' : 'hidden'}">
+      <div class="card" style="background:#fff8f0;border:1.5px solid #FFB347;">${histList}</div>
+    </div>
+    ${groups.map(([date, dayItems]) => {
+      const dayT = sumArr(dayItems, 'cost');
+      return `
+        <div class="card">
+          <div class="date-header">
+            <strong style="color:var(--deep-red);font-size:1.1em;">📅 ${fmtDate(date) || date}</strong>
+            <span style="background:rgba(139,0,0,0.12);padding:4px 14px;border-radius:12px;color:var(--deep-red);font-weight:700;">${t('totalDay')}: ₹${dayT.toLocaleString()}</span>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead><tr><th style="width:36px;text-align:center;">${t('sl')}</th><th>${t('item')}</th><th style="text-align:right;">${t('cost')}</th>${canEdit()?'<th style="width:80px;text-align:center;"></th>':''}</tr></thead>
+              <tbody>${dayItems.map((e, i) => `
+                <tr>
+                  <td style="text-align:center;font-weight:700;color:#8B3A00;">${i+1}</td>
+                  <td style="font-weight:600;">${escHtml(e.item)}</td>
+                  <td style="text-align:right;font-weight:700;color:var(--deep-red);">₹${(e.cost||0).toLocaleString()}</td>
+                  ${canEdit() ? `<td style="text-align:center;"><div style="display:flex;gap:4px;justify-content:center;">
+                    <button class="btn btn-edit" onclick="openEditExp('${e.id}','${category}')">✏️</button>
+                    <button class="btn btn-danger-o" onclick="deleteExpense('${e.id}','${category}')">🗑</button>
+                  </div></td>` : ''}
+                </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+    }).join('')}
+    <div class="dark-card" style="background:linear-gradient(135deg,#8B2000,#CC4400);">
+      <div style="color:#FFD700;font-weight:800;font-size:1em;">${t('totalOverall')}</div>
+      <div style="color:white;font-size:2.8em;font-weight:900;margin-top:4px;">₹${total.toLocaleString()}</div>
+    </div>`;
+}
+
+function toggleExpHistory(category) {
+  if (category === 'expense') _showExpHistory = !_showExpHistory;
+  else _showProgHistory = !_showProgHistory;
+  renderMainApp();
+}
+
+function addExpense(category) {
+  const item = (_expForm.item || '').trim();
+  const cost = parseFloat(_expForm.cost) || 0;
+  if (!item || !cost) { notify('❌ Item and Cost required.'); return; }
+  writePD(pd => {
+    pd.expenses = [...(pd.expenses || []), { id: genId(), date: _expForm.date, item, cost, category }];
+    return pd;
+  });
+  _expForm = { date: _expForm.date, item: '', cost: '' };
+  notify('✅ Added!');
+  setTimeout(renderMainApp, 400);
+}
+
+function deleteExpense(id, category) {
+  writePD(pd => {
+    const e = (pd.expenses || []).find(x => x.id === id);
+    if (!e) return pd;
+    pd.deletedExpenses = [...(pd.deletedExpenses || []), { ...e, deletedAt: new Date().toISOString() }];
+    pd.expenses = (pd.expenses || []).filter(x => x.id !== id);
+    return pd;
+  });
+  setTimeout(renderMainApp, 400);
+}
+
+function restoreExpense(id) {
+  writePD(pd => {
+    const e = (pd.deletedExpenses || []).find(x => x.id === id);
+    if (!e) return pd;
+    pd.expenses = [...(pd.expenses || []), { id: e.id, date: e.date, item: e.item, cost: e.cost, category: e.category }];
+    pd.deletedExpenses = (pd.deletedExpenses || []).filter(x => x.id !== id);
+    return pd;
+  });
+  notify('✅ Restored!');
+  setTimeout(renderMainApp, 400);
+}
+
+function openEditExp(id, category) {
+  const items = category === 'expense' ? getGeneralExp() : getProgExp();
+  const e = items.find(x => x.id === id);
+  if (!e) return;
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-title" style="color:var(--blue);">✏️ ${category === 'expense' ? t('editExpense') : t('editProg')}</div>
+    <label class="lbl">1. ${t('date')}</label>
+    <input class="inp mb12" id="ee-date" type="date" value="${e.date||''}"/>
+    <label class="lbl">2. ${t('item')}</label>
+    <input class="inp mb12" id="ee-item" value="${e.item}"/>
+    <label class="lbl">3. ${t('cost')}</label>
+    <input class="inp mb14" id="ee-cost" type="number" value="${e.cost||''}"/>
+    <div class="modal-actions">
+      <button class="btn btn-blue" onclick="saveEditExp('${id}','${category}')">✔ ${t('update')}</button>
+      <button class="btn btn-secondary" onclick="closeModal()">${t('cancel')}</button>
+    </div>`;
+  openModal();
+}
+
+function saveEditExp(id, category) {
+  writePD(pd => {
+    pd.expenses = (pd.expenses || []).map(e => e.id === id ? {
+      ...e,
+      date: document.getElementById('ee-date')?.value || '',
+      item: (document.getElementById('ee-item')?.value || '').trim(),
+      cost: parseFloat(document.getElementById('ee-cost')?.value) || 0,
+    } : e);
+    return pd;
+  });
+  closeModal(); notify('✅ Updated!');
+  setTimeout(renderMainApp, 400);
+}
+
+// ══════════════════════════════════════════════════════════════
+// BALANCE SHEET TAB
+// ══════════════════════════════════════════════════════════════
+function renderBalanceTab() {
+  const members = getMembers();
+  const totalActual = sumArr(members, 'actual');
+  const totalPaid = sumArr(members, 'paid');
+  const totalDue = totalActual - totalPaid;
+  const totalOther = sumArr(getPD().otherCollections || [], 'amount');
+  const totalCollection = totalPaid + totalOther;
+  const totalGenExp = sumArr(getGeneralExp(), 'cost');
+  const totalProgExp = sumArr(getProgExp(), 'cost');
+  const totalExp = totalGenExp + totalProgExp;
+  const netBalance = totalCollection - totalExp;
+  const isSurplus = netBalance >= 0;
+
+  return `
+    <div class="card" style="border:3px solid #FFD700;">
+      <div class="text-center mb14">
+        <div class="om-logo" style="width:56px;height:56px;font-size:1.9em;margin:0 auto 10px;">ॐ</div>
+        <div style="color:var(--deep-red);font-weight:900;font-size:1.4em;">📊 ${t('balSheet')}</div>
+        <div style="color:#666;">${STATE.year} — ${t(STATE.puja)}</div>
+      </div>
+      <div class="summary-row"><span class="label">🏘️ ${t('villageCollection')}</span><span class="value text-green">₹${totalPaid.toLocaleString()}</span></div>
+      <div class="summary-row"><span class="label">💼 ${t('otherCollection')}</span><span class="value text-green">₹${totalOther.toLocaleString()}</span></div>
+      <div class="summary-total"><strong style="font-size:1.05em;">💰 ${t('totalIncome')}</strong><strong style="color:var(--green);font-size:1.3em;">₹${totalCollection.toLocaleString()}</strong></div>
+      <div class="summary-row"><span class="label">🧾 ${t('expCategory')}</span><span class="value text-red">₹${totalGenExp.toLocaleString()}</span></div>
+      <div class="summary-row"><span class="label">🎭 ${t('programme')}</span><span class="value text-red">₹${totalProgExp.toLocaleString()}</span></div>
+      <div class="summary-total" style="background:rgba(200,0,0,0.08);margin-bottom:18px;"><strong style="font-size:1.05em;">💸 ${t('totalExpense')}</strong><strong style="color:var(--red);font-size:1.3em;">₹${totalExp.toLocaleString()}</strong></div>
+      <div class="net-balance-card" style="background:${isSurplus?'linear-gradient(135deg,#004400,#006600)':'linear-gradient(135deg,#7B0000,#BB0000)'};">
+        <div class="label">${t('netBalance')}</div>
+        <div class="amount">₹${Math.abs(netBalance).toLocaleString()}</div>
+        <div class="status">${isSurplus ? t('surplus') : t('deficit')}</div>
+      </div>
+      <div style="margin-top:16px;background:#fff8f0;border-radius:12px;padding:14px;">
+        <div style="font-weight:900;font-size:1em;color:#8B3A00;margin-bottom:10px;">📋 Due Summary</div>
+        <div class="summary-row"><span>Total Actual</span><span style="font-weight:800;">₹${totalActual.toLocaleString()}</span></div>
+        <div class="summary-row"><span>Total Paid</span><span class="text-green" style="font-weight:800;">₹${totalPaid.toLocaleString()}</span></div>
+        <div class="summary-row"><span>Pending Due</span><span class="text-red" style="font-weight:800;">₹${totalDue.toLocaleString()}</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn btn-secondary" style="flex:1;" onclick="exportJSON()">📤 ${t('export')}</button>
+      <label class="btn btn-secondary" style="flex:1;cursor:pointer;">${t('import')}<input type="file" accept=".json" style="display:none;" onchange="importJSON(event)"/></label>
+    </div>`;
+}
+
+function exportJSON() {
+  const b = new Blob([JSON.stringify(STATE.data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(b);
+  a.download = `tipi_puja_backup_${todayStr()}.json`; a.click();
+  notify('✅ Exported!');
+}
+function importJSON(e) {
+  if (!isAdmin()) { notify('❌ শুধু Admin ইম্পোর্ট করতে পারবেন।'); e.target.value = ''; return; }
+  const f = e.target.files[0]; if (!f) return;
+  // Validate file size (max 2MB)
+  if (f.size > 2 * 1024 * 1024) { notify('❌ ফাইল ২MB এর বেশি হওয়া যাবে না।'); e.target.value = ''; return; }
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const d = JSON.parse(ev.target.result);
+      if (typeof d !== 'object' || Array.isArray(d)) throw new Error('Invalid format');
+      // Only import known puja_data keys (year_pujaName pattern)
+      let count = 0;
+      Object.entries(d).forEach(([k, v]) => {
+        if (/^\d{4}_(durgaPuja|charakPuja)$/.test(k)) {
+          STATE.db.ref('puja_data/' + k).set(v);
+          count++;
+        }
+      });
+      if (count === 0) { notify('❌ কোনো বৈধ ডেটা পাওয়া যায়নি।'); return; }
+      notify(`✅ ${count}টি রেকর্ড ইম্পোর্ট হয়েছে!`);
+    } catch { notify('❌ ফাইল সঠিক নয়।'); }
+  };
+  r.readAsText(f); e.target.value = '';
+}
+
+// ══════════════════════════════════════════════════════════════
+// ADMIN PANEL TAB (inside drawer)
+// ══════════════════════════════════════════════════════════════
+async function renderAdminSection(tab) {
+  tab = tab || 'users';
+  if (!isAdmin()) { notify('❌ Admin only.'); return; }
+  const usersSnap = await STATE.db.ref('users').once('value');
+  const allUsers = usersSnap.val() || {};
+  const settingsSnap = await STATE.db.ref('settings').once('value');
+  const settings = settingsSnap.val() || {};
+
+  const approved = Object.entries(allUsers).filter(([, u]) => u.role !== 'pending');
+  const pending  = Object.entries(allUsers).filter(([, u]) => u.role === 'pending');
+
+  closeDrawer();
+  document.getElementById('header-sub').textContent = '👑 ' + t('adminPanel');
+  document.getElementById('back-btn').style.display = 'block';
+
+  // Build tab bar
+  var tabBar = '<div class="admin-tabs" style="background:linear-gradient(135deg,var(--t-header1),var(--t-header3));">'
+    + '<button class="admin-tab ' + (tab==='users'?'active':'') + '" onclick="renderAdminSection(\'users\')">👥 সদস্য (' + approved.length + ')</button>'
+    + '<button class="admin-tab ' + (tab==='pending'?'active':'') + '" onclick="renderAdminSection(\'pending\')">⏳ অপেক্ষমাণ (' + pending.length + ')</button>'
+    + '<button class="admin-tab ' + (tab==='settings'?'active':'') + '" onclick="renderAdminSection(\'settings\')">⚙️ সেটিংস</button>'
+    + '<button class="admin-tab" onclick="renderSettingsPage()">← ' + t('back') + '</button>'
+    + '</div>';
+
+  // Build content
+  var bodyHtml = '';
+
+  if (tab === 'pending') {
+    var rows = '';
+    if (pending.length === 0) {
+      rows = '<div class="no-data">✅ কোনো অপেক্ষমাণ সদস্য নেই</div>';
+    } else {
+      pending.forEach(function(entry) {
+        var emailKey = entry[0], u = entry[1];
+        var initial = ((u.name||u.email||'?')[0]).toUpperCase();
+        rows += '<div class="user-row anim-slidein">'
+          + '<div class="user-avatar" style="background:linear-gradient(135deg,#994400,#FF6600);">' + escHtml(initial) + '</div>'
+          + '<div class="user-info">'
+          +   '<div class="user-name">' + escHtml(u.name || 'Unknown') + '</div>'
+          +   '<div class="user-email">' + escHtml(u.email) + '</div>'
+          +   '<span class="user-role role-pending">⏳ অপেক্ষমাণ</span>'
+          + '</div>'
+          + '<div style="display:flex;gap:6px;flex-wrap:wrap;">'
+          +   '<button class="btn btn-green-o btn-sm" onclick="approveUser(\'' + emailKey + '\',\'member\')">✅ অনুমোদন</button>'
+          +   '<button class="btn btn-danger-o" onclick="removeUserConfirm(\'' + emailKey + '\',\'' + escHtml(u.name||u.email) + '\')">❌ বাতিল</button>'
+          + '</div>'
+          + '</div>';
+      });
+    }
+    bodyHtml = '<div class="card anim-fadeup"><div class="card-title">⏳ অনুমোদন বাকি (' + pending.length + ')</div>' + rows + '</div>';
+  }
+
+  if (tab === 'users') {
+    var rows = '';
+    if (approved.length === 0) {
+      rows = '<div class="no-data">' + t('noUsers') + '</div>';
+    } else {
+      approved.forEach(function(entry) {
+        var emailKey = entry[0], u = entry[1];
+        var initial = ((u.name||u.email||'?')[0]).toUpperCase();
+        var avatarHtml = u.photo
+          ? '<img src="' + u.photo + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>'
+          : escHtml(initial);
+        var roleBadge = u.role === 'admin'
+          ? '<span class="user-role role-admin">👑 Admin</span>'
+          : '<span class="user-role role-member">👤 Member</span>';
+        var actionBtns = '';
+        if (u.role !== 'admin') {
+          actionBtns += '<button class="btn btn-primary btn-sm" onclick="approveUser(\'' + emailKey + '\',\'admin\')">👑 Admin</button>';
+        }
+        if (u.role === 'admin' && u.email !== (STATE.user && STATE.user.email)) {
+          actionBtns += '<button class="btn btn-secondary btn-sm" onclick="approveUser(\'' + emailKey + '\',\'member\')">↓ Member</button>';
+        }
+        if (u.email !== (STATE.user && STATE.user.email)) {
+          actionBtns += '<button class="btn btn-danger-o" onclick="removeUserConfirm(\'' + emailKey + '\',\'' + escHtml(u.name||u.email) + '\')">🗑 সরান</button>';
+        } else {
+          actionBtns += '<span style="font-size:0.75em;color:#aaa;padding:4px;">(আপনি)</span>';
+        }
+        rows += '<div class="user-row anim-slidein">'
+          + '<div class="user-avatar" style="background:linear-gradient(135deg,var(--t-header1),var(--t-header3));">' + avatarHtml + '</div>'
+          + '<div class="user-info">'
+          +   '<div class="user-name">' + escHtml(u.name || 'Unknown') + '</div>'
+          +   '<div class="user-email">' + escHtml(u.email) + '</div>'
+          +   roleBadge
+          + '</div>'
+          + '<div style="display:flex;gap:6px;flex-wrap:wrap;">' + actionBtns + '</div>'
+          + '</div>';
+      });
+    }
+    bodyHtml = '<div class="card anim-fadeup"><div class="card-title">✅ অনুমোদিত সদস্য (' + approved.length + ')</div>' + rows + '</div>';
+  }
+
+  if (tab === 'settings') {
+    var pwPlaceholder = settings.password ? 'পাসওয়ার্ড সেট আছে — নতুন লিখুন' : 'পাসওয়ার্ড লিখুন…';
+    var lockStatus = settings.locked
+      ? '<strong style="color:var(--red);">🔒 লক</strong>'
+      : '<strong style="color:var(--green);">🔓 আনলক</strong>';
+    bodyHtml = '<div class="card anim-fadeup">'
+      + '<div class="card-title">🔒 অ্যাপ লক পাসওয়ার্ড</div>'
+      + '<label class="lbl">' + t('setPassword') + '</label>'
+      + '<div class="row">'
+      +   '<input class="inp" id="lock-pw-input" type="password" placeholder="' + pwPlaceholder + '"/>'
+      +   '<button class="btn btn-primary btn-sm" onclick="setLockPassword()">💾 ' + t('save') + '</button>'
+      +   '<button class="btn btn-danger-o" onclick="clearLockPassword()">✕</button>'
+      + '</div>'
+      + '<div class="row" style="margin-top:8px;">'
+      +   '<button class="btn btn-primary" style="flex:1;" onclick="toggleAppLock(true)">🔒 ' + t('lockApp') + '</button>'
+      +   '<button class="btn btn-blue" style="flex:1;" onclick="toggleAppLock(false)">🔓 ' + t('unlockApp') + '</button>'
+      + '</div>'
+      + '<div style="margin-top:10px;font-size:0.85em;color:var(--t-subtext);text-align:center;padding:10px;background:rgba(0,0,0,0.04);border-radius:10px;">'
+      +   'বর্তমান অবস্থা: ' + lockStatus
+      + '</div>'
+      + '</div>'
+      + '<div class="card anim-fadeup" style="margin-top:0;">'
+      + '<div class="card-title" style="font-size:0.9em;">🛡️ Firebase Security Rules</div>'
+      + '<div style="background:#1a1a2e;border-radius:12px;padding:12px;font-family:monospace;font-size:0.72em;color:#e0e0e0;overflow-x:auto;line-height:1.7;">'
+      + '<span style="color:#FFD700;">// Firebase Console → Realtime Database → Rules</span><br/>'
+      + '{ "rules": { "users": { ".read":"auth!=null", "$u":{".write":"auth!=null"} }, "puja_data": { ".read":"auth!=null", ".write":"auth!=null" }, "settings": { ".read":"auth!=null", ".write":"auth!=null" } } }'
+      + '</div>'
+      + '<div style="font-size:0.78em;color:#888;margin-top:8px;line-height:1.5;">⚠️ Firebase Console → Realtime Database → Rules → Edit → Paste → Publish</div>'
+      + '</div>';
+  }
+
+  document.getElementById('app-content').innerHTML =
+    tabBar
+    + '<div class="admin-content anim-fadein" style="padding:14px 16px;">' + bodyHtml + '</div>';
+}
+
+async function approveUser(emailKey, role) {
+  await STATE.db.ref('users/' + emailKey + '/role').set(role);
+  notify(`✅ User ${role === 'admin' ? 'made Admin' : 'approved'}!`);
+  renderAdminSection('users');
+}
+async function denyUser(emailKey) {
+  await STATE.db.ref('users/' + emailKey + '/role').set('pending');
+  notify('❌ User removed from approved list.');
+  renderAdminSection('users');
+}
+function removeUserConfirm(emailKey, name) {
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-title" style="color:var(--red);">🗑 সদস্য সরান?</div>
+    <p style="color:#666;margin-bottom:16px;"><strong>${escHtml(name)}</strong> কে সরিয়ে দেবেন? তারা আর অ্যাপ দেখতে পাবে না।</p>
+    <div class="modal-actions">
+      <button class="btn btn-danger-o" style="flex:1;" onclick="denyUser('${emailKey}');closeModal();">✅ হ্যাঁ, সরান</button>
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeModal()">না</button>
+    </div>`;
+  openModal();
+}
+// Simple hash function using Web Crypto API
+async function hashPassword(pw) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(pw + 'tipi_puja_salt_2024');
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function setLockPassword() {
+  const pw = (document.getElementById('lock-pw-input')?.value || '').trim();
+  if (!pw) { notify('❌ পাসওয়ার্ড খালি রাখা যাবে না।'); return; }
+  if (pw.length < 4) { notify('❌ কমপক্ষে ৪ অক্ষরের পাসওয়ার্ড দিন।'); return; }
+  const hashed = await hashPassword(pw);
+  await STATE.db.ref('settings/password').set(hashed);
+  if (document.getElementById('lock-pw-input')) document.getElementById('lock-pw-input').value = '';
+  notify(t('passwordSet'));
+}
+async function clearLockPassword() {
+  // Cannot clear password if app is currently locked
+  const lockSnap = await STATE.db.ref('settings/locked').once('value');
+  if (lockSnap.val() === true) { notify('❌ আনলক করুন তারপর পাসওয়ার্ড মুছুন।'); return; }
+  await STATE.db.ref('settings/password').set('');
+  if (document.getElementById('lock-pw-input')) document.getElementById('lock-pw-input').value = '';
+  notify(t('passwordCleared'));
+}
+async function toggleAppLock(lock) {
+  if (lock) {
+    // Must have a password set before locking
+    const pwSnap = await STATE.db.ref('settings/password').once('value');
+    if (!pwSnap.val()) { notify('❌ প্রথমে পাসওয়ার্ড সেট করুন, তারপর লক করুন।'); return; }
+  }
+  await STATE.db.ref('settings/locked').set(lock);
+  notify(lock ? t('appLocked') : t('appUnlocked'));
+  renderAdminSection('settings');
+}
+
+let _lockAttempts = 0, _lockCooldown = false;
+async function checkLockPassword() {
+  if (_lockCooldown) { notify('⏳ অনেকবার ভুল চেষ্টা। ৩০ সেকেন্ড অপেক্ষা করুন।'); return; }
+  const input = (document.getElementById('lock-password-input')?.value || '').trim();
+  if (!input) {
+    const err = document.getElementById('lock-error');
+    if (err) { err.textContent = '❌ পাসওয়ার্ড লিখুন।'; err.style.display = 'block'; }
+    return;
+  }
+  const snap = await STATE.db.ref('settings/password').once('value');
+  const storedHash = snap.val() || '';
+  const inputHash = await hashPassword(input);
+  if (storedHash && inputHash === storedHash) {
+    showScreen('admin-panel');
+    renderApp();
+  } else {
+    const err = document.getElementById('lock-error');
+    _lockAttempts++;
+    if (_lockAttempts >= 5) {
+      _lockCooldown = true;
+      setTimeout(() => { _lockCooldown = false; _lockAttempts = 0; }, 30000);
+      if (err) { err.textContent = '❌ ৫ বার ভুল। ৩০ সেকেন্ড অপেক্ষা করুন।'; err.style.display = 'block'; }
+    } else {
+      if (err) { err.textContent = `❌ ভুল পাসওয়ার্ড। (${_lockAttempts}/5)`; err.style.display = 'block'; }
+    }
+    if (document.getElementById('lock-password-input')) document.getElementById('lock-password-input').value = '';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// DRAWER MENU
+// ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// SETTINGS DRAWER — full rebuild
+// ══════════════════════════════════════════════════════════════
+function renderSettingsPage() {
+  closeDrawer();
+  var user = STATE.user;
+  var photoHTML = user && user.photoURL
+    ? '<img src="' + user.photoURL + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>'
+    : '<span>' + ((user && (user.displayName||user.email)||'?')[0]).toUpperCase() + '</span>';
+
+  var themeList = [
+    {id:'default', label:'🔴 সাফরন', bg:'linear-gradient(135deg,#8B2000,#CC4400)'},
+    {id:'sky',     label:'🔵 আকাশী', bg:'linear-gradient(135deg,#003D7A,#0077DD)'},
+    {id:'yellow',  label:'🟡 হলুদ',  bg:'linear-gradient(135deg,#7A5500,#DDAA00)'},
+    {id:'violet',  label:'🟣 বেগুনি', bg:'linear-gradient(135deg,#2D0057,#7700CC)'},
+    {id:'dark',    label:'⚫ ডার্ক',  bg:'linear-gradient(135deg,#111,#333)'},
+  ];
+
+  var swatches = '';
+  themeList.forEach(function(th) {
+    var sel = STATE.theme === th.id;
+    swatches += '<div style="text-align:center;">'
+      + '<div class="theme-swatch ' + (sel?'selected':'') + '" style="background:' + th.bg + ';" onclick="applyTheme(\'' + th.id + '\');renderSettingsPage();">'
+      + (sel ? '✓' : '')
+      + '</div>'
+      + '<div style="font-size:0.72em;margin-top:5px;color:var(--t-subtext);font-weight:700;">' + th.label + '</div>'
+      + '</div>';
+  });
+
+  var fontBtns = '';
+  [{l:'S',s:14},{l:'M',s:17},{l:'L',s:19},{l:'XL',s:21}].forEach(function(p) {
+    var sel = STATE.fs === p.s;
+    fontBtns += '<button data-fsize="' + p.s + '" onclick="setFontSize(this)" '
+      + 'style="flex:1;padding:12px 8px;border-radius:12px;cursor:pointer;font-weight:800;border:2px solid;'
+      + 'border-color:' + (sel?'var(--t-btn2)':'var(--t-inp-border)') + ';'
+      + 'background:' + (sel?'linear-gradient(135deg,var(--t-btn1),var(--t-btn2))':'transparent') + ';'
+      + 'color:' + (sel?'var(--t-accent)':'var(--t-subtext)') + ';font-size:' + p.s + 'px;">'
+      + p.l + '</button>';
+  });
+
+  var langBtns = '';
+  ['bn','en'].forEach(function(l) {
+    var sel = STATE.lang === l;
+    langBtns += '<button onclick="STATE.lang=\'' + l + '\';renderSettingsPage();"'
+      + ' style="flex:1;padding:13px;border-radius:12px;cursor:pointer;font-weight:800;font-size:1em;border:2px solid;'
+      + 'border-color:' + (sel?'var(--t-btn2)':'var(--t-inp-border)') + ';'
+      + 'background:' + (sel?'linear-gradient(135deg,var(--t-btn1),var(--t-btn2))':'transparent') + ';'
+      + 'color:' + (sel?'var(--t-accent)':'var(--t-subtext)') + ';">'
+      + (l==='bn'?'🇮🇳 বাংলা':'🇬🇧 English') + (sel?' ✓':'')
+      + '</button>';
+  });
+
+  var adminSection = isAdmin()
+    ? '<div class="card anim-fadeup" style="border:2px solid var(--t-btn2);">'
+      + '<div class="card-title">👑 অ্যাডমিন কন্ট্রোল</div>'
+      + '<button class="btn btn-primary btn-full" style="margin-bottom:10px;" onclick="renderAdminSection(\'users\')">👥 সদস্য অনুমোদন ও ব্যবস্থাপনা</button>'
+      + '<button class="btn btn-primary btn-full" onclick="renderAdminSection(\'settings\')">⚙️ অ্যাপ লক ও সেটিংস</button>'
+      + '</div>'
+    : '';
+
+  var userName  = escHtml((user && user.displayName) || 'User');
+  var userEmail = escHtml((user && user.email) || '');
+  var userRole  = STATE.userRole === 'admin' ? '👑 Admin' : '👤 Member';
+
+  document.getElementById('header-sub').textContent = '⚙️ সেটিংস';
+  document.getElementById('back-btn').style.display = 'block';
+  document.getElementById('app-content').innerHTML =
+    '<div class="admin-content anim-fadein" style="padding:14px 16px;">'
+
+    // Profile
+    + '<div class="profile-card anim-fadeup">'
+    +   '<div class="profile-avatar">' + photoHTML + '</div>'
+    +   '<div class="profile-name">' + userName + '</div>'
+    +   '<div class="profile-email">' + userEmail + '</div>'
+    +   '<div class="profile-role-badge">' + userRole + '</div>'
+    + '</div>'
+
+    // Theme
+    + '<div class="card anim-fadeup" style="animation-delay:0.05s;">'
+    +   '<div class="card-title">🎨 থিম রঙ বেছে নিন</div>'
+    +   '<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;padding:8px 0;">' + swatches + '</div>'
+    + '</div>'
+
+    // Font
+    + '<div class="card anim-fadeup" style="animation-delay:0.1s;">'
+    +   '<div class="card-title">🔤 ফন্ট সাইজ</div>'
+    +   '<div style="display:flex;gap:8px;">' + fontBtns + '</div>'
+    + '</div>'
+
+    // Language
+    + '<div class="card anim-fadeup" style="animation-delay:0.15s;">'
+    +   '<div class="card-title">🌐 ভাষা / Language</div>'
+    +   '<div style="display:flex;gap:10px;">' + langBtns + '</div>'
+    + '</div>'
+
+    // Admin
+    + adminSection
+
+    // Account / Sign out
+    + '<div class="card anim-fadeup" style="animation-delay:0.2s;">'
+    +   '<div class="card-title">🔐 অ্যাকাউন্ট</div>'
+    +   '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--t-border);margin-bottom:12px;">'
+    +     '<div class="user-avatar" style="width:44px;height:44px;flex-shrink:0;">' + photoHTML + '</div>'
+    +     '<div><div style="font-weight:800;font-size:1em;">' + userName + '</div>'
+    +     '<div style="font-size:0.78em;color:var(--t-subtext);">' + userEmail + '</div></div>'
+    +   '</div>'
+    +   '<button class="btn btn-danger-o btn-full" style="padding:13px;font-size:1em;" onclick="confirmSignOut()">🚪 সাইন আউট করুন</button>'
+    + '</div>'
+
+    // App info
+    + '<div class="card anim-fadeup" style="animation-delay:0.25s;text-align:center;">'
+    +   '<div class="om-logo om-float" style="width:60px;height:60px;font-size:2em;margin:0 auto 10px;">ॐ</div>'
+    +   '<div style="font-weight:900;color:var(--deep-red);font-size:1.05em;">টিপি সার্বজনীন পূজা কমিটি</div>'
+    +   '<div style="font-size:0.78em;color:#aaa;margin-top:4px;">Version 7.1 — PWA Edition</div>'
+    + '</div>'
+
+    + '<button class="btn btn-secondary btn-full" onclick="renderApp()">← ' + t('back') + '</button>'
+    + '</div>';
+}
+
+function confirmSignOut() {
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-title" style="color:var(--deep-red);">🚪 সাইন আউট?</div>
+    <p style="color:#666;margin-bottom:16px;">আপনি কি সত্যিই সাইন আউট করতে চান?</p>
+    <div class="modal-actions">
+      <button class="btn btn-danger-o" style="flex:1;" onclick="signOut();closeModal();">হ্যাঁ, সাইন আউট</button>
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeModal()">না, থাকুন</button>
+    </div>`;
+  openModal();
+}
+
+function renderDrawer() {
+  const FONT_PRESETS = [
+    { label: 'S', title: 'Small', size: 14 },
+    { label: 'M', title: 'Medium', size: 17 },
+    { label: 'L', title: 'Large', size: 19 },
+    { label: 'XL', title: 'Extra Large', size: 21 },
+  ];
+  const photoHtml = STATE.user?.photoURL
+    ? '<img src="' + STATE.user.photoURL + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />'
+    : '<span>' + (STATE.user?.displayName||STATE.user?.email||'?')[0].toUpperCase() + '</span>';
+
+  document.getElementById('drawer-title').textContent = t('menuTitle');
+
+  // Language buttons
+  const langBtns = ['bn','en'].map(l =>
+    '<button onclick="STATE.lang=\'' + l + '\';closeDrawer();renderApp();" style="display:block;width:100%;margin-bottom:8px;padding:12px 16px;border-radius:12px;cursor:pointer;font-weight:700;font-size:' + fs() + ';text-align:left;border:1.5px solid ' + (STATE.lang===l?'var(--deep-red)':'#FFB347') + ';background:' + (STATE.lang===l?'linear-gradient(135deg,#8B2000,#CC4400)':'white') + ';color:' + (STATE.lang===l?'#FFD700':'#333') + ';">'
+    + (l==='bn'?'🇮🇳 বাংলা':'🇬🇧 English') + (STATE.lang===l?'<span style="float:right;">✓</span>':'')
+    + '</button>'
+  ).join('');
+
+  // Font buttons
+  const fontBtns = FONT_PRESETS.map(p =>
+    '<button onclick="STATE.fs=' + p.size + ';closeDrawer();renderApp();" style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:8px;padding:12px 16px;border-radius:12px;cursor:pointer;font-weight:700;text-align:left;border:1.5px solid ' + (STATE.fs===p.size?'var(--deep-red)':'#FFB347') + ';background:' + (STATE.fs===p.size?'linear-gradient(135deg,#8B2000,#CC4400)':'white') + ';color:' + (STATE.fs===p.size?'#FFD700':'#333') + ';">'
+    + '<span style="font-size:' + p.size + 'px;">' + p.title + '</span>'
+    + '<span style="font-size:' + p.size + 'px;">Aআ</span>'
+    + (STATE.fs===p.size?'<span>✓</span>':'')
+    + '</button>'
+  ).join('');
+
+  const adminBtn = isAdmin()
+    ? '<button onclick="renderAdminSection();" style="display:block;width:100%;margin-bottom:8px;padding:14px 16px;border-radius:12px;cursor:pointer;font-weight:800;font-size:' + fs() + ';text-align:left;border:none;background:linear-gradient(135deg,#8B2000,#CC4400);color:#FFD700;">👑 ' + t('adminPanel') + '</button>'
+    : '';
+
+  document.getElementById('drawer-body').innerHTML =
+    '<!-- Language -->'
+    + '<div class="drawer-section">'
+    +   '<button class="drawer-section-header" onclick="toggleDrawerSection(this)">'
+    +     '<span style="font-weight:800;">' + t('menuLanguage') + '</span>'
+    +     '<span class="accordion-arrow">›</span>'
+    +   '</button>'
+    +   '<div class="drawer-section-body">' + langBtns + '</div>'
+    + '</div>'
+    + '<!-- Font -->'
+    + '<div class="drawer-section">'
+    +   '<button class="drawer-section-header" onclick="toggleDrawerSection(this)">'
+    +     '<span style="font-weight:800;">' + t('menuFont') + '</span>'
+    +     '<span class="accordion-arrow">›</span>'
+    +   '</button>'
+    +   '<div class="drawer-section-body">' + fontBtns + '</div>'
+    + '</div>'
+    + adminBtn
+    + '<!-- About -->'
+    + '<div class="drawer-section">'
+    +   '<button class="drawer-section-header" onclick="toggleDrawerSection(this)">'
+    +     '<span style="font-weight:800;">' + t('menuAbout') + '</span>'
+    +     '<span class="accordion-arrow">›</span>'
+    +   '</button>'
+    +   '<div class="drawer-section-body" style="text-align:center;padding-top:10px;">'
+    +     '<div class="om-logo" style="margin:0 auto 10px;width:48px;height:48px;font-size:1.6em;">ॐ</div>'
+    +     '<div style="color:var(--deep-red);font-weight:900;font-size:1em;">' + t('appName') + '</div>'
+    +     '<p style="color:#666;font-size:0.85em;line-height:1.6;margin-top:8px;">Built for Tipi Sarbajanin Puja Committee.</p>'
+    +     '<p style="color:var(--deep-red);font-weight:700;font-size:0.82em;margin-top:6px;">Version 7.1 — PWA Edition</p>'
+    +   '</div>'
+    + '</div>'
+    + '<!-- Footer -->'
+    + '<div class="drawer-footer">'
+    +   '<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,0,0,0.05);border-radius:12px;margin-bottom:12px;">'
+    +     '<div class="user-avatar" style="width:40px;height:40px;font-size:0.95em;flex-shrink:0;">' + photoHtml + '</div>'
+    +     '<div style="flex:1;min-width:0;">'
+    +       '<div style="font-weight:800;font-size:0.9em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(STATE.user?.displayName||'User') + '</div>'
+    +       '<div style="font-size:0.75em;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(STATE.user?.email||'') + '</div>'
+    +     '</div>'
+    +   '</div>'
+    +   '<button class="btn btn-primary btn-full" style="margin-bottom:8px;" onclick="closeDrawer();renderSettingsPage();">⚙️ সেটিংস ও থিম</button>'
+    +   '<button class="btn btn-danger-o btn-full" onclick="confirmSignOut();closeDrawer();">🚪 ' + t('signOut') + '</button>'
+    + '</div>';
+}
+
+function openDrawer() {
+  renderDrawer();
+  document.getElementById('drawer-overlay').style.display = 'block';
+  document.getElementById('drawer').classList.add('open');
+}
+function closeDrawer() {
+  document.getElementById('drawer-overlay').style.display = 'none';
+  document.getElementById('drawer').classList.remove('open');
+}
+function toggleDrawerSection(btn) {
+  const body = btn.nextElementSibling;
+  const arrow = btn.querySelector('.accordion-arrow');
+  const isOpen = body.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.drawer-section-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.drawer-section-header').forEach(b => { b.classList.remove('active'); b.querySelector('.accordion-arrow')?.classList.remove('open'); });
+  if (!isOpen) {
+    body.classList.add('open');
+    btn.classList.add('active');
+    if (arrow) arrow.classList.add('open');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════════════════════════
+function openModal() { document.getElementById('modal-overlay').classList.add('open'); }
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+// ══════════════════════════════════════════════════════════════
+// PWA — MANIFEST + SERVICE WORKER
+// ══════════════════════════════════════════════════════════════
+(function initPWA() {
+  // Build inline SVG icon (saffron Om symbol)
+  const svgIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">'
+    + '<rect width="512" height="512" rx="100" fill="#6B1000"/>'
+    + '<circle cx="256" cy="256" r="200" fill="#AA2800"/>'
+    + '<text x="256" y="330" font-family="Georgia,serif" font-size="220" fill="#FFD700" text-anchor="middle">ॐ</text>'
+    + '</svg>';
+  const iconBlob = new Blob([svgIcon], {type: 'image/svg+xml'});
+  const iconUrl = URL.createObjectURL(iconBlob);
+
+  // Set apple touch icon
+  const iconLink = document.getElementById('pwa-icon');
+  if (iconLink) iconLink.href = iconUrl;
+
+  // Build manifest
+  const manifest = {
+    name: "টিপি সার্বজনীন পূজা কমিটি",
+    short_name: "টিপি পূজা",
+    description: "Tipi Sarbajanin Puja Committee Management App",
+    start_url: "./",
+    display: "standalone",
+    orientation: "portrait",
+    background_color: "#6B1000",
+    theme_color: "#6B1000",
+    icons: [
+      { src: iconUrl, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
+      { src: iconUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+    ]
+  };
+  const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+  const manifestUrl = URL.createObjectURL(manifestBlob);
+  const manifestLink = document.getElementById('pwa-manifest');
+  if (manifestLink) manifestLink.href = manifestUrl;
+
+  // Register service worker (inline via blob)
+  const swCode = [
+    "const CACHE = 'tipi-puja-v7';",
+    "const FIREBASE_SCRIPTS = [",
+    "  'https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js',",
+    "  'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js',",
+    "  'https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js',",
+    "];",
+    "self.addEventListener('install', e => {",
+    "  e.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FIREBASE_SCRIPTS)).catch(() => {}));",
+    "  self.skipWaiting();",
+    "});",
+    "self.addEventListener('activate', e => {",
+    "  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))));",
+    "  self.clients.claim();",
+    "});",
+    "self.addEventListener('fetch', e => {",
+    "  if (e.request.url.includes('gstatic.com/firebasejs')) {",
+    "    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).then(res => {",
+    "      const clone = res.clone();",
+    "      caches.open(CACHE).then(c => c.put(e.request, clone));",
+    "      return res;",
+    "    })));",
+    "  }",
+    "});",
+  ].join('\n');
+  if ('serviceWorker' in navigator) {
+    const swBlob = new Blob([swCode], {type: 'application/javascript'});
+    const swUrl = URL.createObjectURL(swBlob);
+    navigator.serviceWorker.register(swUrl).catch(() => {});
+  }
+
+  // PWA install prompt
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    showInstallBanner();
+  });
+
+  window.triggerPWAInstall = async function() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      hideInstallBanner();
+      if (outcome === 'accepted') notify('✅ অ্যাপ ইনস্টল হচ্ছে!');
+    }
+  };
+
+  function showInstallBanner() {
+    let banner = document.getElementById('pwa-install-banner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'pwa-install-banner';
+      banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#6B1000,#CC4400);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;z-index:2000;box-shadow:0 -4px 20px rgba(0,0,0,0.4);gap:10px;';
+      banner.innerHTML = '<div style="color:white;font-size:14px;flex:1;line-height:1.4;">'
+        + '<div style="font-weight:900;font-size:15px;color:#FFD700;">📲 অ্যাপ ইনস্টল করুন</div>'
+        + '<div style="opacity:0.85;">হোম স্ক্রিনে যোগ করুন — অফলাইনেও কাজ করবে</div>'
+        + '</div>'
+        + '<button onclick="triggerPWAInstall()" style="background:#FFD700;color:#6B1000;border:none;border-radius:12px;padding:10px 18px;font-weight:900;font-size:14px;cursor:pointer;flex-shrink:0;">ইনস্টল</button>'
+        + '<button onclick="hideInstallBanner()" style="background:rgba(255,255,255,0.15);color:white;border:none;border-radius:10px;padding:10px 12px;font-size:16px;cursor:pointer;flex-shrink:0;">✕</button>';
+      document.body.appendChild(banner);
+    }
+    banner.style.display = 'flex';
+  }
+
+  window.hideInstallBanner = function() {
+    const b = document.getElementById('pwa-install-banner');
+    if (b) b.style.display = 'none';
+  };
+
+  // iOS Safari manual instructions (no beforeinstallprompt support)
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isInStandalone = window.navigator.standalone;
+  if (isIOS && !isInStandalone) {
+    setTimeout(() => {
+      let banner = document.getElementById('pwa-install-banner');
+      if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'pwa-install-banner';
+        banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#6B1000,#CC4400);padding:14px 16px;z-index:2000;box-shadow:0 -4px 20px rgba(0,0,0,0.4);';
+        banner.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">'
+          + '<div style="color:white;font-size:14px;flex:1;line-height:1.6;">'
+          + '<div style="font-weight:900;font-size:15px;color:#FFD700;">📲 iPhone-এ ইনস্টল করুন</div>'
+          + '<div style="opacity:0.9;">Safari-এ নিচে <strong style="color:#FFD700;">Share ↑</strong> বাটন চাপুন</div>'
+          + '<div style="opacity:0.9;">তারপর <strong style="color:#FFD700;">&quot;Add to Home Screen&quot;</strong> বেছে নিন</div>'
+          + '</div>'
+          + '<button onclick="hideInstallBanner()" style="background:rgba(255,255,255,0.2);color:white;border:none;border-radius:10px;padding:8px 12px;font-size:16px;cursor:pointer;flex-shrink:0;margin-top:2px;">✕</button>'
+          + '</div>'
+          + '<div style="margin-top:10px;display:flex;gap:8px;align-items:center;background:rgba(255,255,255,0.1);border-radius:10px;padding:8px 12px;">'
+          + '<span style="font-size:24px;">⬆️</span>'
+          + '<span style="color:rgba(255,255,255,0.85);font-size:13px;">Safari browser-এ নিচের Share বাটন ট্যাপ করুন</span>'
+          + '</div>';
+        document.body.appendChild(banner);
+      }
+    }, 3000);
+  }
+})();
+
+// ══════════════════════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  // Restore theme
+  try {
+    const savedTheme = localStorage.getItem('tipi_theme') || 'default';
+    applyTheme(savedTheme, false);
+  } catch {}
+  // Hardcoded Firebase config — no setup needed
+  const FIREBASE_CFG = {
+    apiKey: "AIzaSyAg3IwDyFVUCSgK958ZlzbaF8yllb9Kuj4",
+    authDomain: "tipi-puja-64d05.firebaseapp.com",
+    databaseURL: "https://tipi-puja-64d05-default-rtdb.firebaseio.com",
+    projectId: "tipi-puja-64d05",
+    storageBucket: "tipi-puja-64d05.firebasestorage.app",
+    messagingSenderId: "787220727579",
+    appId: "1:787220727579:web:cbda9db7e74dac6e4bb5be",
+    measurementId: "G-594LH785G2"
+  };
+  startFirebase(FIREBASE_CFG);
+});
+
+function applyTheme(theme, save=true) {
+  const themes = ['default','sky','yellow','violet','dark'];
+  document.body.classList.remove(...themes.map(t => 'theme-' + t));
+  if (theme !== 'default') document.body.classList.add('theme-' + theme);
+  STATE.theme = theme;
+  // Update meta theme-color
+  const mc = document.querySelector('meta[name="theme-color"]');
+  const colors = { default:'#6B1000', sky:'#003D7A', yellow:'#7A5500', violet:'#2D0057', dark:'#111111' };
+  if (mc) mc.content = colors[theme] || '#6B1000';
+  if (save) { try { localStorage.setItem('tipi_theme', theme); } catch {} }
+  // Re-render if app is running
+  if (STATE.user) renderDrawer();
+}
+</script>
+</body>
+</html>
